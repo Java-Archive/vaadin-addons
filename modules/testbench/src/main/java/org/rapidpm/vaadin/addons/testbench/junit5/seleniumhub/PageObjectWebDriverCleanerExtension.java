@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchFunctions.webdrivername;
+import static org.rapidpm.vaadin.addons.testbench.TestbenchFunctions.webdrivername;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.removeWebDriver;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.webdriver;
 

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.model.Result;
-import org.rapidpm.vaadin.addons.testbench.junit5.VaadinPageObject;
+import org.rapidpm.vaadin.addons.testbench.junit5.pageobject.VaadinPageObject;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
 import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.webDriverInstances;
-import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchFunctions.webdrivername;
+import static org.rapidpm.vaadin.addons.testbench.TestbenchFunctions.webdrivername;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.storeWebDriver;
 
 /**
@@ -42,9 +42,7 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
 
 
   public interface MyTestTemplateInvocationContext extends TestTemplateInvocationContext {
-
     WebDriver webdriver();
-
   }
 
 
