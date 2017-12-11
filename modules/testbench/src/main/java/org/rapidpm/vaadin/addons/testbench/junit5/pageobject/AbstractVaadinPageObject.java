@@ -1,12 +1,11 @@
-package org.rapidpm.vaadin.addons.testbench.junit5;
+package org.rapidpm.vaadin.addons.testbench.junit5.pageobject;
 
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 import org.openqa.selenium.WebDriver;
-
-import java.util.function.Supplier;
+import org.rapidpm.vaadin.addons.testbench.WithID;
 
 /**
  *
