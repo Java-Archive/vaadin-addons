@@ -1,18 +1,14 @@
 package org.rapidpm.vaadin.addons.testbench.junit5.seleniumhub;
 
-import com.vaadin.testbench.TestBenchDriverProxy;
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.model.Result;
-import org.rapidpm.vaadin.addons.testbench.junit5.AbstractVaadinPageObject;
 import org.rapidpm.vaadin.addons.testbench.junit5.VaadinPageObject;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
@@ -39,7 +35,7 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
         .stream()
         .map(this::invocationContext)
         .peek(po -> {
-          logger().warning("peek - page object -> setting as webDriver into Store ");
+          logger().info("peek - page object -> setting as webDriver into Store ");
           storeWebDriver().accept(context, ((MyTestTemplateInvocationContext) po)::webdriver);
         });
   }
@@ -50,8 +46,6 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
     WebDriver webdriver();
 
   }
-
-
 
 
   private TestTemplateInvocationContext invocationContext(WebDriver parameter) {

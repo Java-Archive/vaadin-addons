@@ -19,8 +19,7 @@ public class PageObjectWebDriverCleanerExtension implements AfterEachCallback, H
     logger().warning("PageObjectWebDriverCleanerExtension -> remove Webdriver");
 
     final WebDriver webDriver = webdriver().apply(context).get();
-    logger().warning("close webdriver of type " + webdrivername().apply(webDriver));
-//    webDriver.close();
+    logger().info("close webdriver of type " + webdrivername().apply(webDriver));
     webDriver.quit();
 
     removeWebDriver().accept(context);
