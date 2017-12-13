@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @ExtendWith(ServletContainerExtension.class)
 @ExtendWith(PageObjectInvocationContextProvider.class)
+@ExtendWith(VideoManagementExtension.class)
 @ExtendWith(PageObjectWebDriverCleanerExtension.class)
 public @interface VaadinCompatTest {
 }
