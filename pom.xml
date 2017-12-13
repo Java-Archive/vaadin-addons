@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <parent>
+    <groupId>org.rapidpm</groupId>
+    <artifactId>rapidpm-dependencies</artifactId>
+    <version>3.5.3</version>
+  </parent>
+
+  <artifactId>rapidpm-vaadin-addons</artifactId>
+  <packaging>pom</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+
+
+  <inceptionYear>2017</inceptionYear>
+  <organization>
+    <name>Functional Reactive</name>
+    <url>http://www.functional-reactive.org</url>
+  </organization>
+  <modules>
+    <!--<module>rapidpm-vaadin-component-testing</module>-->
+    <!--<module>rapidpm-vaadin-addons-framework</module>-->
+    <!--<module>rapidpm-vaadin-addons-protools</module>-->
+    <module>bom</module>
+    <module>modules</module>
+  </modules>
+
+  <url>https://github.com/vaadin-developer/vaadin-addons.git</url>
+  <name>RapidPM Vaadin AddOns ( Framework and Pro Tools)</name>
+  <!--<description></description>-->
+  <scm>
+    <url>https://github.com/vaadin-developer/vaadin-addons</url>
+    <connection>scm:git:https://github.com/vaadin-developer/vaadin-addons.git</connection>
+    <developerConnection>scm:git:https://github.com/vaadin-developer/vaadin-addons.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <developers>
+    <developer>
+      <name>Sven Ruppert</name>
+      <email>sven.ruppert@gmail.com</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/vaadin-developer/vaadin-addons/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+    <webdriverextensions-maven-plugin.version>3.1.3</webdriverextensions-maven-plugin.version>
+  </properties>
+
+
+  <dependencies>
+    <!--RapidPM-->
+
+
+  </dependencies>
+
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.github.webdriverextensions</groupId>
+          <artifactId>webdriverextensions-maven-plugin</artifactId>
+          <version>3.1.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <!--<goal>jar</goal> do not define it here again !!-->
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
