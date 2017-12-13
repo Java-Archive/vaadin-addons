@@ -1,4 +1,4 @@
-package org.rapidpm.vaadin.addons.testbench.junit5.seleniumhub;
+package org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub;
 
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
@@ -36,8 +36,9 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
         .map(this::invocationContext)
         .peek(po -> {
           logger().info("peek - page object -> setting as webDriver into Store ");
-          storeWebDriver().accept(context, ((MyTestTemplateInvocationContext) po)::webdriver);
-        });
+          storeWebDriver().accept(context,  po.webdriver());
+        })
+        .map(e -> (MyTestTemplateInvocationContext)e);
   }
 
 
@@ -46,7 +47,7 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
   }
 
 
-  private TestTemplateInvocationContext invocationContext(WebDriver parameter) {
+  private MyTestTemplateInvocationContext invocationContext(WebDriver parameter) {
     return new MyTestTemplateInvocationContext() {
 
       @Override

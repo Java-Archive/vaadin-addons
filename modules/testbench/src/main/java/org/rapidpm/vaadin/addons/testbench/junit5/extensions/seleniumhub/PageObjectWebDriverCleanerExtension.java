@@ -1,4 +1,4 @@
-package org.rapidpm.vaadin.addons.testbench.junit5.seleniumhub;
+package org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub;
 
 import com.vaadin.testbench.TestBenchDriverProxy;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -24,7 +24,7 @@ public class PageObjectWebDriverCleanerExtension implements AfterEachCallback, H
   @Override
   public void afterEach(ExtensionContext context) throws Exception {
     logger().info("PageObjectWebDriverCleanerExtension -> remove Webdriver");
-    final WebDriver webDriver = webdriver().apply(context).get();
+    final WebDriver webDriver = webdriver().apply(context);
     logger().info("close webdriver of type " + webdrivername().apply(webDriver));
     match(
         matchCase(() -> failure("could not map driver to impl class " + webdrivername().apply(webDriver))),

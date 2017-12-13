@@ -1,23 +1,17 @@
-package org.rapidpm.vaadin.addons.testbench.junit5.seleniumhub;
+package org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub;
 
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.frp.model.Result;
-import org.rapidpm.frp.model.Tripel;
-import org.rapidpm.frp.model.serial.Pair;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.store;
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.storeGlobal;
-import static org.rapidpm.vaadin.addons.testbench.junit5.seleniumhub.PageObjectWebDriverCleanerExtension.SESSION_ID;
+import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub.PageObjectWebDriverCleanerExtension.SESSION_ID;
 
 /**
  *
