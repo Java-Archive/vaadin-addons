@@ -15,10 +15,9 @@ import java.util.function.Supplier;
  */
 public interface ExtensionFunctions {
 
+  ExtensionContext.Namespace NAMESPACE_GLOBAL = ExtensionContext.Namespace.create("global");
 
   String WEBDRIVER         = "webdriver";
-
-  String ZALENIUMCONTAINER = "zaleniumcontainer";
 
   static Function<ExtensionContext, ExtensionContext.Namespace> namespaceFor() {
     return (ctx) -> {
@@ -30,6 +29,10 @@ public interface ExtensionFunctions {
       );
       return namespace;
     };
+  }
+
+  static Function<ExtensionContext,ExtensionContext.Store> storeGlobal(){
+    return (context) -> context.getStore(NAMESPACE_GLOBAL);
   }
 
   static Function<ExtensionContext, ExtensionContext.Store> store() {
@@ -44,24 +47,11 @@ public interface ExtensionFunctions {
     return (context) -> (key) -> store().apply(context).remove(key);
   }
 
-  static Function<ExtensionContext, GenericContainer> zaleniumContainer() {
-    return (context) -> store().apply(context).get(ZALENIUMCONTAINER, BrowserWebDriverContainer.class);
+  static Function<ExtensionContext, WebDriver> webdriver() {
+    return (context) -> store().apply(context).get(WEBDRIVER, WebDriver.class);
   }
 
-  static BiConsumer<ExtensionContext, GenericContainer> storeZaleniumContainer() {
-    return (context, webDriver) -> store().apply(context).put(ZALENIUMCONTAINER, webDriver);
-  }
-
-  static Consumer<ExtensionContext> removeZaleniumContainer() {
-    return (context) -> store().apply(context).remove(ZALENIUMCONTAINER);
-  }
-
-  //TODO extract to generic base class -> Testcontainers / Zalenium / ..
-  static Function<ExtensionContext, Supplier<WebDriver>> webdriver() {
-    return (context) -> store().apply(context).get(WEBDRIVER, Supplier.class);
-  }
-
-  static BiConsumer<ExtensionContext, Supplier<WebDriver>> storeWebDriver() {
+  static BiConsumer<ExtensionContext, WebDriver> storeWebDriver() {
     return (context, webDriver) -> store().apply(context).put(WEBDRIVER, webDriver);
   }
 
