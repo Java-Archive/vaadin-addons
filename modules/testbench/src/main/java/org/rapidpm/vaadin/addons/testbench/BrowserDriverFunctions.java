@@ -13,13 +13,15 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.rapidpm.dependencies.core.logger.HasLogger;
+import org.rapidpm.dependencies.core.logger.Logger;
 import org.rapidpm.frp.Transformations;
 import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedPredicate;
 import org.rapidpm.frp.functions.CheckedSupplier;
-import org.rapidpm.frp.matcher.Case;
 import org.rapidpm.frp.model.Result;
+import org.rapidpm.frp.model.serial.Pair;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -27,26 +29,39 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.lang.System.setProperty;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.rapidpm.frp.StringFunctions.notEmpty;
 import static org.rapidpm.frp.StringFunctions.notStartsWith;
 import static org.rapidpm.frp.Transformations.not;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.model.Result.failure;
-import static org.rapidpm.frp.model.Result.success;
+import static org.rapidpm.frp.memoizer.Memoizer.memoize;
+import static org.rapidpm.frp.model.Result.*;
 
 /**
  *
  *
  */
-public interface BrowserDriverFunctions {
+public interface BrowserDriverFunctions extends HasLogger {
 
-  public static Supplier<String> localeIP() {
+  String BROWSER_NAME = "browserName";
+  String PLATFORM     = "platform";
+  String UNITTESTING  = "unittesting";
+  String VERSION      = "version";
+  String ENABLE_VIDEO = "enableVideo";
+
+
+  String SELENIUM_GRID_PROPERTIES_LOCALE_IP      = "locale-ip";
+  String SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER = "locale";
+  String SELENIUM_GRID_PROPERTIES_NO_GRID        = "nogrid";
+
+  static Supplier<String> localeIP() {
     return () -> {
       final CheckedSupplier<Enumeration<NetworkInterface>> checkedSupplier = NetworkInterface::getNetworkInterfaces;
 
@@ -70,7 +85,11 @@ public interface BrowserDriverFunctions {
     };
   }
 
-  public static CheckedFunction<String, Properties> propertyReader() {
+  static CheckedFunction<String, Properties> propertyReaderMemoized() {
+    return (CheckedFunction<String, Properties>) memoize(propertyReader());
+  }
+
+  static CheckedFunction<String, Properties> propertyReader() {
     return (filename) -> {
       try (
           final FileInputStream fis = new FileInputStream(new File(filename));
@@ -86,7 +105,7 @@ public interface BrowserDriverFunctions {
     };
   }
 
-  public static CheckedExecutor readTestbenchProperties() {
+  static CheckedExecutor readTestbenchProperties() {
     return () -> propertyReader()
         .apply("config/testbench.properties")
         .ifPresent(p -> p.forEach((key, value) -> setProperty((String) key, (String) value))
@@ -94,7 +113,22 @@ public interface BrowserDriverFunctions {
 
   }
 
-  public static Function<String, Result<WebDriver>> localWebDriverInstance() {
+  static Supplier<Properties> readSeleniumGridProperties() {
+    return () -> {
+      final Properties properties = propertyReader()
+          .apply("config/selenium-grids.properties")
+          .getOrElse(Properties::new);
+
+      // load properties for locale webdriver
+      if (properties
+          .stringPropertyNames()
+          .contains(SELENIUM_GRID_PROPERTIES_LOCALE_IP)) readTestbenchProperties().execute();
+      return properties;
+    };
+  }
+
+
+  static Function<String, Result<WebDriver>> localWebDriverInstance() {
     return browserType -> match(
         matchCase(() -> success(new PhantomJSDriver())),
         matchCase(browserType::isEmpty, () -> Result.failure("browserTape should not be empty")),
@@ -108,7 +142,7 @@ public interface BrowserDriverFunctions {
     );
   }
 
-  public static Function<String, Result<DesiredCapabilities>> type2Capabilities() {
+  static Function<String, Result<DesiredCapabilities>> type2Capabilities() {
     return (browsertype) ->
         match(
             matchCase(() -> failure("browsertype unknown : " + browsertype)),
@@ -124,7 +158,23 @@ public interface BrowserDriverFunctions {
         );
   }
 
-  public static Supplier<Result<List<DesiredCapabilities>>> readDesiredCapabilities() {
+  static Supplier<Result<DesiredCapabilities>> readDefaultDesiredCapability() {
+    return () -> ofNullable(readDesiredCapabilities()
+                                .get()
+                                .stream()
+                                .map(desiredCapabilitiesList -> desiredCapabilitiesList
+                                    .stream()
+                                    .filter(dc -> (dc.getCapability(UNITTESTING) != null)
+                                                  ? Boolean.valueOf(dc.getCapability(UNITTESTING).toString())
+                                                  : Boolean.FALSE)
+                                    .collect(toList()))
+                                .filter(l -> l.size() == 1)
+                                .findFirst()
+                                .orElse(emptyList())
+                                .get(0), "too many or no default Browser specified..");
+  }
+
+  static Supplier<Result<List<DesiredCapabilities>>> readDesiredCapabilities() {
     return () -> {
       final List<DesiredCapabilities> result = new ArrayList<>();
       final File                      file   = new File("config/browser_combinations.json");
@@ -141,21 +191,24 @@ public interface BrowserDriverFunctions {
               reader.beginObject();
               String                    browser     = "";
               String                    version     = "";
-              String                    platform    = "";
+              Platform                  platform    = Platform.ANY;
               final Map<String, Object> noNameProps = new HashMap<>();
               while (reader.hasNext()) {
                 String property = reader.nextName();
                 switch (property) {
-                  case "browserName":
+                  case BROWSER_NAME:
                     browser = reader.nextString();
                     break;
-                  case "platform":
-                    platform = reader.nextString();
+                  case PLATFORM:
+                    platform = Platform.fromString(reader.nextString());
                     break;
-                  case "version":
+                  case VERSION:
                     version = reader.nextString();
                     break;
-                  case "enableVideo":
+                  case ENABLE_VIDEO:
+                    noNameProps.put(property, reader.nextBoolean());
+                    break;
+                  case UNITTESTING:
                     noNameProps.put(property, reader.nextBoolean());
                     break;
                   default:
@@ -164,14 +217,14 @@ public interface BrowserDriverFunctions {
                 }
               }
 
-              final String platformFinal = platform;
-              final String versionFinal  = version;
+              final Platform platformFinal = platform;
+              final String   versionFinal  = version;
 
               type2Capabilities()
                   .apply(browser)
                   .ifPresentOrElse(
                       success -> {
-                        success.setPlatform(Platform.fromString(platformFinal));
+                        success.setPlatform(platformFinal);
                         success.setVersion(versionFinal);
                         noNameProps.forEach(success::setCapability);
                         result.add(success);
@@ -197,28 +250,80 @@ public interface BrowserDriverFunctions {
   }
 
 
-  /**
-   * This will create all defined WebDriver instances for the full integration test.
-   * If you are defining different Selenium Hubs, you will get Driver for all of them.
-   * Normally this amount is not so big, means that memory consumption should not be a problem
-   */
+  static Result<WebDriver> unittestingWebDriverInstance() {
+    final String unittesting = readSeleniumGridProperties().get().getProperty(UNITTESTING);
+    return (unittesting != null)
+           ? match(
+        matchCase(BrowserDriverFunctions::defaultRemoteWebDriverInstance),
+        matchCase(unittesting::isEmpty,
+                  () -> Result.failure(UNITTESTING + " should not be empty")
+        ),
+        matchCase(() -> unittesting.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
+                  BrowserDriverFunctions::defaultLocaleWebDriverInstance
+        )
+    )
+           : Result.failure("no target for " + UNITTESTING + " could be found.");
+
+  }
+
+  static Result<WebDriver> defaultLocaleWebDriverInstance() {
+    readTestbenchProperties().execute();
+    final Result<DesiredCapabilities> dcResult = readDefaultDesiredCapability().get();
+    return (dcResult.isPresent())
+           ? localWebDriverInstance().apply(dcResult.get().getBrowserName())
+           : dcResult.asFailure();
+
+  }
+
+  static Result<WebDriver> defaultRemoteWebDriverInstance() {
+    final Result<DesiredCapabilities> dcResult    = readDefaultDesiredCapability().get();
+    final String                      unittesting = readSeleniumGridProperties().get().getProperty(UNITTESTING);
+
+    return (dcResult.isPresent())
+           ? (unittesting != null)
+             ? webDriverInstance().apply(dcResult.get(), Pair.next(UNITTESTING, unittesting))
+             : Result.failure(UNITTESTING + " should not be empty")
+           : dcResult.asFailure();
+  }
 
 
-  public static Supplier<List<WebDriver>> webDriverInstances() {
+  static BiFunction<DesiredCapabilities, Pair<String, String>, Result<WebDriver>> webDriverInstance() {
+    return (desiredCapability, pair) -> {
+      final String key           = pair.getT1();
+      final String targetAddress = pair.getT2();
+
+      final String ip = (targetAddress.endsWith(SELENIUM_GRID_PROPERTIES_LOCALE_IP))
+                        ? localeIP().get()
+                        : targetAddress;
+
+      return
+          match(
+              matchCase(() -> ((CheckedSupplier<WebDriver>) () -> {
+                          final URL             url             = new URL("http://" + ip + ":4444/wd/hub");
+                          final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
+                          return TestBench.createDriver(remoteWebDriver);
+                        }).get()
+              ),
+              matchCase(() -> key.equals(SELENIUM_GRID_PROPERTIES_NO_GRID),
+                        () -> localWebDriverInstance()
+                            .apply(desiredCapability.getBrowserName())
+              )
+          );
+    };
+  }
+
+
+  static Supplier<List<WebDriver>> webDriverInstances() {
     return () -> {
 
-      readTestbenchProperties().execute(); // load properties for locale webdriver
-
-      final Properties properties = propertyReader()
-          .apply("config/selenium-grids.properties")
-          .getOrElse(Properties::new);
+      final Properties properties = readSeleniumGridProperties().get();
 
       return readDesiredCapabilities()
           .get()
           .getOrElse(Collections::emptyList) //TODO check if needed
           .stream()
-          .map(desiredCapability -> {
-            final String browserName = desiredCapability.getBrowserName();
+          .map((desiredCapability) -> {
+
             //for all selenium ips
             return properties
                 .entrySet()
@@ -226,31 +331,15 @@ public interface BrowserDriverFunctions {
                 .map(e -> {
                   final String key           = (String) e.getKey();
                   final String targetAddress = (String) e.getValue();
-
-                  final String ip = (targetAddress.endsWith("locale-ip"))
-                                    ? localeIP().get()
-                                    : targetAddress;
-
-                  return Case
-                      .match(
-                          matchCase(() -> ((CheckedSupplier<WebDriver>) () -> {
-                                      final URL             url             = new URL("http://" + ip + ":4444/wd/hub");
-                                      final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
-                                      return TestBench.createDriver(remoteWebDriver);
-                                    }).get()
-                          ),
-                          matchCase(() -> key.equals("nogrid"), () -> localWebDriverInstance().apply(browserName))
-                      );
+                  return webDriverInstance().apply(desiredCapability, Pair.next(key, targetAddress));
                 })
-                .peek(r -> {
-                  r.ifPresentOrElse(
-                      success -> {},
-                      failed -> {
-                        System.out.println("failed = " + failed);
-                        System.out.println("desiredCapability = " + desiredCapability);
-                      }
-                  );
-                })
+                .peek(r -> r.ifPresentOrElse(
+                    success -> {},
+                    failed -> {
+                      Logger.getLogger(WebDriverFunctions.class).warning("failed = " + failed);
+                      Logger.getLogger(WebDriverFunctions.class).warning("desiredCapability = " + desiredCapability);
+                    }
+                ))
                 .filter(Result::isPresent)
                 .collect(toList());
           })
