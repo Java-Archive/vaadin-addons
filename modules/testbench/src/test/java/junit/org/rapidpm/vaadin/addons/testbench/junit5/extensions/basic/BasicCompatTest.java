@@ -14,7 +14,7 @@ import static org.rapidpm.vaadin.addons.testbench.WebDriverFunctions.takeScreenS
 public class BasicCompatTest {
 
   @TestTemplate
-  void testTemplate(@PageObject BasicTestPageObject pageObject) {
+  void testTemplate(BasicTestPageObject pageObject) {
     pageObject.loadPage();
     pageObject.button.get().click();
     takeScreenShot().accept(pageObject.getDriver());

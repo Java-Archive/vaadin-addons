@@ -53,6 +53,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   String BROWSER_NAME = "browserName";
   String PLATFORM     = "platform";
   String UNITTESTING  = "unittesting";
+  String ENABLE_VNC   = "enableVNC";
   String VERSION      = "version";
   String ENABLE_VIDEO = "enableVideo";
 
@@ -110,36 +111,30 @@ public interface BrowserDriverFunctions extends HasLogger {
         .apply("config/testbench.properties")
         .ifPresent(p -> p.forEach((key, value) -> setProperty((String) key, (String) value))
         );
-
   }
 
   static Supplier<Properties> readSeleniumGridProperties() {
-    return () -> {
-      final Properties properties = propertyReader()
-          .apply("config/selenium-grids.properties")
-          .getOrElse(Properties::new);
-
-      // load properties for locale webdriver
-      if (properties
-          .stringPropertyNames()
-          .contains(SELENIUM_GRID_PROPERTIES_LOCALE_IP)) readTestbenchProperties().execute();
-      return properties;
-    };
+    return () -> propertyReader()
+        .apply("config/selenium-grids.properties")
+        .getOrElse(Properties::new);
   }
 
 
   static Function<String, Result<WebDriver>> localWebDriverInstance() {
-    return browserType -> match(
-        matchCase(() -> success(new PhantomJSDriver())),
-        matchCase(browserType::isEmpty, () -> Result.failure("browserTape should not be empty")),
-        matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(new PhantomJSDriver())),
-        matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(new FirefoxDriver())),
-        matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver())),
-        matchCase(() -> browserType.equals(BrowserType.SAFARI), () -> success(new SafariDriver())),
-        matchCase(() -> browserType.equals(BrowserType.OPERA), () -> success(new OperaDriver())),
-        matchCase(() -> browserType.equals(BrowserType.OPERA_BLINK), () -> success(new OperaDriver())),
-        matchCase(() -> browserType.equals(BrowserType.IE), () -> success(new InternetExplorerDriver()))
-    );
+    return browserType -> {
+      readTestbenchProperties().execute();
+      return match(
+          matchCase(() -> success(new PhantomJSDriver())),
+          matchCase(browserType::isEmpty, () -> Result.failure("browserTape should not be empty")),
+          matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(new PhantomJSDriver())),
+          matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(new FirefoxDriver())),
+          matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver())),
+          matchCase(() -> browserType.equals(BrowserType.SAFARI), () -> success(new SafariDriver())),
+          matchCase(() -> browserType.equals(BrowserType.OPERA), () -> success(new OperaDriver())),
+          matchCase(() -> browserType.equals(BrowserType.OPERA_BLINK), () -> success(new OperaDriver())),
+          matchCase(() -> browserType.equals(BrowserType.IE), () -> success(new InternetExplorerDriver()))
+      );
+    };
   }
 
   static Function<String, Result<DesiredCapabilities>> type2Capabilities() {
@@ -211,6 +206,9 @@ public interface BrowserDriverFunctions extends HasLogger {
                   case UNITTESTING:
                     noNameProps.put(property, reader.nextBoolean());
                     break;
+                    case ENABLE_VNC:
+                    noNameProps.put(property, reader.nextBoolean());
+                    break;
                   default:
                     noNameProps.put(property, reader.nextString());
                     break;
@@ -267,7 +265,6 @@ public interface BrowserDriverFunctions extends HasLogger {
   }
 
   static Result<WebDriver> defaultLocaleWebDriverInstance() {
-    readTestbenchProperties().execute();
     final Result<DesiredCapabilities> dcResult = readDefaultDesiredCapability().get();
     return (dcResult.isPresent())
            ? localWebDriverInstance().apply(dcResult.get().getBrowserName())
@@ -295,7 +292,6 @@ public interface BrowserDriverFunctions extends HasLogger {
       final String ip = (targetAddress.endsWith(SELENIUM_GRID_PROPERTIES_LOCALE_IP))
                         ? localeIP().get()
                         : targetAddress;
-
       return
           match(
               matchCase(() -> ((CheckedSupplier<WebDriver>) () -> {
