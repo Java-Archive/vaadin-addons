@@ -2,19 +2,17 @@
   "browsers": [
     {
       "browserName": "chrome",
-      "platform": "ANY",
-      "version": ""
-    },
-    {
-      "browserName": "internet explorer",
-      "platform": "ANY",
-      "version": "11"
+      "platform": "Linux",
+      "version": "63.0",
+      "enableVideo": true,
+      "unittesting": true,
+      "enableVNC": true
     },
     {
       "browserName": "firefox",
-      "platform": "ANY",
-      "version": "45",
-      "marionette":"false"
+      "platform": "Linux",
+      "version": "57.0",
+      "enableVideo": false
     }
   ]
 }

@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 public interface TestbenchFunctions {
 
 
-  static Function<WebDriver, String> webdrivername(){
+  static Function<WebDriver, String> webdrivername() {
     return (d) -> (d instanceof TestBenchDriverProxy)
                   ? ((TestBenchDriverProxy) d).getActualDriver().toString()
                   : d.toString();

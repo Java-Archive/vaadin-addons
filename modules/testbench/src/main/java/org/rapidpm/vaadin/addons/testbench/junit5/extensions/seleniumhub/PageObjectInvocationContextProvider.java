@@ -36,9 +36,9 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
         .map(this::invocationContext)
         .peek(po -> {
           logger().info("peek - page object -> setting as webDriver into Store ");
-          storeWebDriver().accept(context,  po.webdriver());
+          storeWebDriver().accept(context, po.webdriver());
         })
-        .map(e -> (MyTestTemplateInvocationContext)e);
+        .map(e -> (MyTestTemplateInvocationContext) e);
   }
 
 

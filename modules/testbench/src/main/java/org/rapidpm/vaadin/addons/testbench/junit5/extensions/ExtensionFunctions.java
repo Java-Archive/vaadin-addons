@@ -2,13 +2,10 @@ package org.rapidpm.vaadin.addons.testbench.junit5.extensions;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
-import org.testcontainers.containers.BrowserWebDriverContainer;
-import org.testcontainers.containers.GenericContainer;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  *
@@ -17,7 +14,7 @@ public interface ExtensionFunctions {
 
   ExtensionContext.Namespace NAMESPACE_GLOBAL = ExtensionContext.Namespace.create("global");
 
-  String WEBDRIVER         = "webdriver";
+  String WEBDRIVER = "webdriver";
 
   static Function<ExtensionContext, ExtensionContext.Namespace> namespaceFor() {
     return (ctx) -> {
@@ -31,7 +28,7 @@ public interface ExtensionFunctions {
     };
   }
 
-  static Function<ExtensionContext,ExtensionContext.Store> storeGlobal(){
+  static Function<ExtensionContext, ExtensionContext.Store> storeGlobal() {
     return (context) -> context.getStore(NAMESPACE_GLOBAL);
   }
 

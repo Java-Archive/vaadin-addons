@@ -206,7 +206,7 @@ public interface BrowserDriverFunctions extends HasLogger {
                   case UNITTESTING:
                     noNameProps.put(property, reader.nextBoolean());
                     break;
-                    case ENABLE_VNC:
+                  case ENABLE_VNC:
                     noNameProps.put(property, reader.nextBoolean());
                     break;
                   default:
@@ -330,7 +330,7 @@ public interface BrowserDriverFunctions extends HasLogger {
                   return webDriverInstance().apply(desiredCapability, Pair.next(key, targetAddress));
                 })
                 .peek(r -> r.ifPresentOrElse(
-                    success -> {},
+                    success -> { },
                     failed -> {
                       Logger.getLogger(WebDriverFunctions.class).warning("failed = " + failed);
                       Logger.getLogger(WebDriverFunctions.class).warning("desiredCapability = " + desiredCapability);

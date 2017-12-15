@@ -2,7 +2,6 @@ package org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.rapidpm.vaadin.addons.testbench.junit5.extensions.container.ServletContainerExtension;
-import org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub.PageObjectInvocationContextProvider;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

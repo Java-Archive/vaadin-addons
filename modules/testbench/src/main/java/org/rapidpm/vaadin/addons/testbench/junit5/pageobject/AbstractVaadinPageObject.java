@@ -2,6 +2,7 @@ package org.rapidpm.vaadin.addons.testbench.junit5.pageobject;
 
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
+import com.vaadin.testbench.elements.LabelElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 import org.openqa.selenium.WebDriver;
@@ -33,16 +34,19 @@ public abstract class AbstractVaadinPageObject
   }
 
   public WithID<TextFieldElement> textField() {
-    return (id) -> $(TextFieldElement.class).id(id);
+    return id -> $(TextFieldElement.class).id(id);
   }
 
   public WithID<PasswordFieldElement> passwordField() {
-    return (id) -> $(PasswordFieldElement.class).id(id);
+    return id -> $(PasswordFieldElement.class).id(id);
   }
 
   public WithID<ButtonElement> btn() {
-    return (id) -> $(ButtonElement.class).id(id);
+    return id -> $(ButtonElement.class).id(id);
   }
 
+  public WithID<LabelElement> label() {
+    return id -> $(LabelElement.class).id(id);
+  }
 
 }
