@@ -1,7 +1,6 @@
 package org.rapidpm.vaadin.addons.testbench.junit5.extensions;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.openqa.selenium.WebDriver;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -14,7 +13,7 @@ public interface ExtensionFunctions {
 
   ExtensionContext.Namespace NAMESPACE_GLOBAL = ExtensionContext.Namespace.create("global");
 
-  String WEBDRIVER = "webdriver";
+
 
   static Function<ExtensionContext, ExtensionContext.Namespace> namespaceFor() {
     return (ctx) -> {
@@ -44,16 +43,5 @@ public interface ExtensionFunctions {
     return (context) -> (key) -> store().apply(context).remove(key);
   }
 
-  static Function<ExtensionContext, WebDriver> webdriver() {
-    return (context) -> store().apply(context).get(WEBDRIVER, WebDriver.class);
-  }
-
-  static BiConsumer<ExtensionContext, WebDriver> storeWebDriver() {
-    return (context, webDriver) -> store().apply(context).put(WEBDRIVER, webDriver);
-  }
-
-  static Consumer<ExtensionContext> removeWebDriver() {
-    return (context) -> store().apply(context).remove(WEBDRIVER);
-  }
 
 }

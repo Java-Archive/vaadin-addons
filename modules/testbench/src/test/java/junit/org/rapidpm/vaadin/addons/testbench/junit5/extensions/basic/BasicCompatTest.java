@@ -17,7 +17,7 @@ public class BasicCompatTest {
   void testTemplate(BasicTestPageObject pageObject) {
     pageObject.loadPage();
     pageObject.button.get().click();
-    takeScreenShot().accept(pageObject.getDriver());
+    pageObject.screenshot();
   }
 
 }

@@ -10,7 +10,7 @@ import org.rapidpm.dependencies.core.logger.HasLogger;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.webdriver;
+import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.webdriver;
 
 
 /**

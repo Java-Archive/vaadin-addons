@@ -96,6 +96,20 @@
         <version>${selenium.version}</version>
       </dependency>
 
+
+      <!--Project Modules-->
+      <dependency>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm.vaadin</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+
     </dependencies>
   </dependencyManagement>
 

@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 import static java.lang.System.getProperties;
 import static org.rapidpm.microservice.MainUndertow.DEFAULT_SERVLET_PORT;
 import static org.rapidpm.microservice.MainUndertow.MYAPP;
+import static org.rapidpm.vaadin.addons.testbench.WebDriverFunctions.takeScreenShot;
 
 /**
  *
@@ -74,6 +75,10 @@ public interface VaadinPageObject extends HasDriver, HasLogger {
             ok -> logger().info("webdriver close -> OK"),
             failed -> logger().warning("webdriver close failed -> " + failed)
         );
+  }
+
+  default void screenshot(){
+    takeScreenShot().accept(getDriver());
   }
 
 }

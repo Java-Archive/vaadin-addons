@@ -15,6 +15,11 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.rapidpm.microservice</groupId>
       <artifactId>rapidpm-microservice-modules-core</artifactId>
       <!--<scope>test</scope>-->
@@ -87,6 +92,7 @@
       <!--<scope>provided</scope>-->
       <scope>compile</scope>
     </dependency>
+
 
   </dependencies>
 
