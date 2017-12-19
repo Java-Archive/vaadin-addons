@@ -73,13 +73,7 @@
   <dependencies>
     <!--RapidPM-->
     <!--Version definitions-->
-    <dependency>
-      <groupId>org.rapidpm</groupId>
-      <artifactId>rapidpm-vaadin-addons-bom</artifactId>
-      <version>${project.version}</version>
-      <scope>import</scope>
-      <type>pom</type>
-    </dependency>
+
 
   </dependencies>
 
