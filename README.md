@@ -57,8 +57,8 @@ docker run --rm \
 aerokube/cm:latest \
 selenoid \
 update \
---tmpfs 128 \  
---browsers chrome,firefox,opera,phantomjs 
+--tmpfs 128 \
+--browsers chrome,firefox,opera,phantomjs \
 --last-versions 4 > _data/selenoid/config/browsers.json
 ```
 
