@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 
 import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.unittestingWebDriverInstance;
+import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.removeWebDriver;
+import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.storeWebDriver;
+import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.webdriver;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.*;
 
 /**

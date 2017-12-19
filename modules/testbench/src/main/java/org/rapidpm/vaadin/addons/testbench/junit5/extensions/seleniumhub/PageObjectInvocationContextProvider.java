@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static java.util.Collections.singletonList;
 import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.webDriverInstances;
 import static org.rapidpm.vaadin.addons.testbench.TestbenchFunctions.webdrivername;
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.storeWebDriver;
+import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.storeWebDriver;
 
 /**
  *
