@@ -77,7 +77,7 @@ public interface VaadinPageObject extends HasDriver, HasLogger {
         );
   }
 
-  default void screenshot(){
+  default void screenshot() {
     takeScreenShot().accept(getDriver());
   }
 
