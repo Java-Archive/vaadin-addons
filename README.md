@@ -66,7 +66,7 @@ update \
 start the selenoid node
 
 ```
-docker run -d --name selenoid \
+docker run --rm -d --name selenoid \
 -p 4444:4444                                    \
 -v /var/run/docker.sock:/var/run/docker.sock    \
 -v `pwd`/_data/selenoid/config/:/etc/selenoid/:ro              \
@@ -78,8 +78,8 @@ aerokube/selenoid:latest-release
 start the ui for selenoid if you want, not needed
 
 ```
-docker run -d --name selenoid-ui --link selenoid \
+docker run --rm -d --name selenoid-ui --link selenoid \
 -p 8080:8080 aerokube/selenoid-ui \
---selenoid-uri=http://192.168.0.228:4444
+--selenoid-uri=http://selenoid:4444
 ```
 
