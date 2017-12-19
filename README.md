@@ -1,12 +1,44 @@
+
+<center>
+<a href="https://vaadin.com">
+ <img src="https://vaadin.com/images/hero-reindeer.svg" width="200" height="200" /></a>
+</center>
+
 # vaadin-addons
-A bunch of Vaadin Add Ons..
+This ist the first version of my Testbench Add On. **Testbench** is 
+from [https://vaadin.com/](https://vaadin.com/) and could 
+be found here [https://vaadin.com/testbench](https://vaadin.com/testbench).
+
+To use/try Vaadin Testbench you can get 
+a License / Trail here : [https://vaadin.com/pro/licenses](https://vaadin.com/pro/licenses) 
+If you are using TestBench for an Open Source Project you can apply for
+an Open Source License.
+
+
+The basic documentation about Testbench for Vaadin 8 
+is here [https://vaadin.com/docs/testbench/testbench-overview.html](https://vaadin.com/docs/testbench/testbench-overview.html)
+
+## Target of this Add On
+The target for this project is the 
+optimized handling of the webdrivers and PageObject-Pattern
+to write effective and compact tests
+with jUnt5 , TestBench and different Selenium Implementations.
+
+A few different ways of writing Junit Tests for Vaadin Apps
+you can find here : [https://github.com/vaadin-developer/testbench-jumpstart](https://github.com/vaadin-developer/testbench-jumpstart)
+
+As mentioned before, the docu is not ready until now.
+Have a look at the tests or better, ask me ;-)
+
+email: [mailto:sven.ruppert@gmail.com](mailto:sven.ruppert@gmail.com)
+Twitter: [https://twitter.com/SvenRuppert](https://twitter.com/SvenRuppert) 
+
 
 ## Selenoid in Docker
+Selenoid is a nice alternative for Selenium written in GO.
+Give it a try ;-)
 
-## optionals 
-
-
-## needed
+A easy way of using it, will be based on Docker.
 
 This is needed to manage the driver images 
 
