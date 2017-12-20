@@ -35,7 +35,7 @@ Twitter: [https://twitter.com/SvenRuppert](https://twitter.com/SvenRuppert)
 
 
 ## Selenoid in Docker
-Selenoid is a nice alternative for Selenium written in GO.
+Selenoid is a nice alternative for Selenium-Hub written in GO.
 Give it a tryand check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
 One easy way of using it, will be based on Docker.
 
