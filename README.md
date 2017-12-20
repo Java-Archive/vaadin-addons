@@ -22,7 +22,7 @@ is here [https://vaadin.com/docs/testbench/testbench-overview.html](https://vaad
 The target for this project is the 
 optimized handling of the webdrivers and PageObject-Pattern
 to write effective and compact tests
-with jUnti5 , TestBench and different Selenium Implementations.
+with jUnit5 , TestBench and different Selenium Implementations.
 
 A few different ways of writing Junit Tests for Vaadin Apps
 you can find here : [https://github.com/vaadin-developer/testbench-jumpstart](https://github.com/vaadin-developer/testbench-jumpstart)
@@ -64,7 +64,7 @@ update \
 start the selenoid hub
 
 ```bash
-docker run -d --name selenoid \
+docker run --rm -d --name selenoid \
 -p 4444:4444                                    \
 -v /var/run/docker.sock:/var/run/docker.sock    \
 -v `pwd`/_data/selenoid/config/:/etc/selenoid/:ro              \
@@ -76,7 +76,7 @@ aerokube/selenoid:latest-release
 start the ui for selenoid if you want, not needed
 
 ```bash
-docker run -d --name selenoid-ui --link selenoid \
+docker run --rm -d --name selenoid-ui --link selenoid \
 -p 8080:8080 aerokube/selenoid-ui \
 --selenoid-uri=http://selenoid:4444
 ```
