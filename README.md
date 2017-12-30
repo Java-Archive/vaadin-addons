@@ -35,8 +35,8 @@ Twitter: [https://twitter.com/SvenRuppert](https://twitter.com/SvenRuppert)
 
 
 ## Selenoid in Docker
-Selenoid is a nice alternative for Selenium written in GO.
-Give it a tryand check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
+Selenoid is a nice alternative for Selenium written in Go.
+Give it a try and check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
 One easy way of using it, will be based on Docker.
 
 This is needed to manage the driver images 
