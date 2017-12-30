@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.store;
+import static org.rapidpm.vaadin.addons.junit5.extensions.ExtensionFunctions.store;
 
 /**
  *

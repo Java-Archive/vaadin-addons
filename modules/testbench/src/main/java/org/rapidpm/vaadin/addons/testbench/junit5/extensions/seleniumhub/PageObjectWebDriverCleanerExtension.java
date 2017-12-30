@@ -14,7 +14,7 @@ import static org.rapidpm.frp.model.Result.success;
 import static org.rapidpm.vaadin.addons.testbench.TestbenchFunctions.webdrivername;
 import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.removeWebDriver;
 import static org.rapidpm.vaadin.addons.testbench.junit5.TestbenchExtensionFunctions.webdriver;
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.*;
+import static org.rapidpm.vaadin.addons.junit5.extensions.ExtensionFunctions.*;
 
 /**
  *

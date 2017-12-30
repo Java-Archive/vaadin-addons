@@ -7,8 +7,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.testcontainers.containers.GenericContainer;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.*;
-
 /**
  *
  */

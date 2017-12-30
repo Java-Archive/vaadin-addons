@@ -1,10 +1,7 @@
 package org.rapidpm.vaadin.addons.testbench.junit5.pageobject;
 
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.LabelElement;
-import com.vaadin.testbench.elements.PasswordFieldElement;
-import com.vaadin.testbench.elements.TextFieldElement;
+import com.vaadin.testbench.elements.*;
 import org.openqa.selenium.WebDriver;
 import org.rapidpm.vaadin.addons.testbench.WithID;
 
@@ -48,5 +45,12 @@ public abstract class AbstractVaadinPageObject
   public WithID<LabelElement> label() {
     return id -> $(LabelElement.class).id(id);
   }
+
+  public WithID<GridElement> grid() {
+    return id -> $(GridElement.class).id(id);
+  }
+
+
+
 
 }

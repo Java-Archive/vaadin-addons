@@ -61,6 +61,10 @@ public interface VaadinPageObject extends HasDriver, HasLogger {
     return () -> url().get() + "?restartApplication";
   }
 
+  default Supplier<String> urlDebugApp() {
+    return () -> url().get() + "?debug";
+  }
+
   default void destroy() {
     ((CheckedExecutor) getDriver()::quit)
         .apply(null)

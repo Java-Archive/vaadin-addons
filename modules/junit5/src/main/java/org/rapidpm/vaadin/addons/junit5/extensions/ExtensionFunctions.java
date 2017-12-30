@@ -1,4 +1,4 @@
-package org.rapidpm.vaadin.addons.testbench.junit5.extensions;
+package org.rapidpm.vaadin.addons.junit5.extensions;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 
