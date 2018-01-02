@@ -1,4 +1,4 @@
-package org.rapidpm.vaadin.addons.testbench;
+package org.rapidpm.vaadin.addons.framework;
 
 import com.vaadin.ui.*;
 import org.rapidpm.frp.functions.TriFunction;

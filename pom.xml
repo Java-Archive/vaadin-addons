@@ -30,7 +30,7 @@
   </modules>
 
   <url>https://github.com/vaadin-developer/vaadin-addons.git</url>
-  <name>RapidPM Vaadin AddOns ( Framework and Pro Tools)</name>
+  <name>RapidPM Vaadin AddOns (Framework and Pro Tools)</name>
   <!--<description></description>-->
   <scm>
     <url>https://github.com/vaadin-developer/vaadin-addons</url>

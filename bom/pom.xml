@@ -21,9 +21,9 @@
     <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
 
     <rapidpm-functional-reactive.version>0.1.0</rapidpm-functional-reactive.version>
-    <rapidpm-microservice.version>1.0.0</rapidpm-microservice.version>
+    <rapidpm-microservice.version>1.0.1</rapidpm-microservice.version>
 
-    <vaadin.version>8.1.7</vaadin.version>
+    <vaadin.version>8.2.0</vaadin.version>
     <vaadin-testbench.version>5.1.1</vaadin-testbench.version>
 
     <selenium.version>3.4.0</selenium.version>
@@ -107,8 +107,14 @@
         <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
         <version>${project.version}</version>
       </dependency>
+
       <dependency>
-        <groupId>org.rapidpm.vaadin</groupId>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
         <version>${project.version}</version>
       </dependency>

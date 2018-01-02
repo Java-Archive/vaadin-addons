@@ -4,7 +4,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
 
-import static org.rapidpm.vaadin.addons.testbench.ComponentIDGenerator.buttonID;
+import static org.rapidpm.vaadin.addons.framework.ComponentIDGenerator.buttonID;
 
 /**
  *

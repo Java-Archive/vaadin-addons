@@ -10,13 +10,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
-
-
   <dependencies>
 
     <dependency>
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
     </dependency>
 
     <dependency>
