@@ -50,7 +50,29 @@ public abstract class AbstractVaadinPageObject
     return id -> $(GridElement.class).id(id);
   }
 
+  public WithID<ComboBoxElement> comboBox() {
+    return id -> $(ComboBoxElement.class).id(id);
+  }
 
+  public WithID<DateFieldElement> dateField() {
+    return id -> $(DateFieldElement.class).id(id);
+  }
+
+  public WithID<FormLayoutElement> formLayout() {
+    return id -> $(FormLayoutElement.class).id(id);
+  }
+
+  public WithID<CssLayoutElement> cssLayout() {
+    return id -> $(CssLayoutElement.class).id(id);
+  }
+
+  public WithID<HorizontalLayoutElement> horizontalLayout() {
+    return id -> $(HorizontalLayoutElement.class).id(id);
+  }
+
+  public WithID<VerticalLayoutElement> verticalLayout() {
+    return id -> $(VerticalLayoutElement.class).id(id);
+  }
 
 
 }

@@ -5,6 +5,7 @@ import org.rapidpm.frp.functions.TriFunction;
 
 import java.util.Locale;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  *
@@ -19,6 +20,11 @@ public interface ComponentIDGenerator {
         .toLowerCase(Locale.US);
   }
 
+  static Function<String, String> caption() {
+    return (id) -> id + "." + "caption";
+  }
+
+
   static BiFunction<Class, String, String> gridID() {
     return (uiClass, label) -> genericID().apply(uiClass, Grid.class, label);
   }
@@ -26,6 +32,15 @@ public interface ComponentIDGenerator {
   static BiFunction<Class, String, String> buttonID() {
     return (uiClass, label) -> genericID().apply(uiClass, Button.class, label);
   }
+
+  static BiFunction<Class, String, String> comboBoxID() {
+    return (uiClass, label) -> genericID().apply(uiClass, ComboBox.class, label);
+  }
+
+  static BiFunction<Class, String, String> dateFieldID() {
+    return (uiClass, label) -> genericID().apply(uiClass, DateField.class, label);
+  }
+
 
   static BiFunction<Class, String, String> labelID() {
     return (uiClass, label) -> genericID().apply(uiClass, Label.class, label);
@@ -38,6 +53,9 @@ public interface ComponentIDGenerator {
   static BiFunction<Class, String, String> passwordID() {
     return (uiClass, label) -> genericID().apply(uiClass, PasswordField.class, label);
   }
+
+
+//  Layouts
 
   static BiFunction<Class, String, String> cssLayoutID() {
     return (uiClass, label) -> genericID().apply(uiClass, CssLayout.class, label);
