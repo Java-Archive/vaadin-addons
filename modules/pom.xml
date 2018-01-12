@@ -17,6 +17,7 @@
     <module>junit5</module>
     <module>framework</module>
     <module>testbench</module>
+    <module>container</module>
   </modules>
 
   <dependencyManagement>

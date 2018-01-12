@@ -20,7 +20,10 @@
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
     </dependency>
-
+	<dependency>
+    	<groupId>org.rapidpm</groupId>
+    	<artifactId>rapidpm-vaadin-addons-modules-container-initializer</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.rapidpm.microservice</groupId>
       <artifactId>rapidpm-microservice-modules-core</artifactId>
@@ -31,7 +34,11 @@
       <artifactId>rapidpm-microservice-modules-core-testutils</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+    	<groupId>org.rapidpm</groupId>
+    	<artifactId>rapidpm-vaadin-addons-modules-container-initializer-rapidpm</artifactId>
+    	<scope>test</scope>
+    </dependency>
     <!--Core Vaadin Stuff-->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -94,8 +101,6 @@
       <!--<scope>provided</scope>-->
       <scope>compile</scope>
     </dependency>
-
-
   </dependencies>
 
 

@@ -118,7 +118,16 @@
         <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
         <version>${project.version}</version>
       </dependency>
-
+      <dependency>
+    	<groupId>org.rapidpm</groupId>
+    	<artifactId>rapidpm-vaadin-addons-modules-container-initializer</artifactId>
+    	<version>${project.version}</version>
+      </dependency>
+	  <dependency>
+	    <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer-rapidpm</artifactId>
+	    <version>${project.version}</version>
+	  </dependency>
 
     </dependencies>
   </dependencyManagement>
