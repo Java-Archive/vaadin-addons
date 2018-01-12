@@ -15,18 +15,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.dependencies.core.logger.Logger;
-import org.rapidpm.frp.Transformations;
 import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.functions.CheckedFunction;
-import org.rapidpm.frp.functions.CheckedPredicate;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.frp.model.serial.Pair;
-
+import org.rapidpm.vaadin.addons.framework.NetworkFunctions;
 import java.io.*;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.URL;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -36,9 +31,6 @@ import java.util.function.Supplier;
 import static java.lang.System.setProperty;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static org.rapidpm.frp.StringFunctions.notEmpty;
-import static org.rapidpm.frp.StringFunctions.notStartsWith;
-import static org.rapidpm.frp.Transformations.not;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
 import static org.rapidpm.frp.memoizer.Memoizer.memoize;
@@ -61,30 +53,6 @@ public interface BrowserDriverFunctions extends HasLogger {
   String SELENIUM_GRID_PROPERTIES_LOCALE_IP      = "locale-ip";
   String SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER = "locale";
   String SELENIUM_GRID_PROPERTIES_NO_GRID        = "nogrid";
-
-  static Supplier<String> localeIP() {
-    return () -> {
-      final CheckedSupplier<Enumeration<NetworkInterface>> checkedSupplier = NetworkInterface::getNetworkInterfaces;
-
-      return Transformations.<NetworkInterface>enumToStream()
-          .apply(checkedSupplier.getOrElse(Collections::emptyEnumeration))
-          .filter((CheckedPredicate<NetworkInterface>) NetworkInterface::isUp)
-          .map(NetworkInterface::getInetAddresses)
-          .flatMap(iaEnum -> Transformations.<InetAddress>enumToStream().apply(iaEnum))
-          .filter(inetAddress -> inetAddress instanceof Inet4Address)
-          .filter(not(InetAddress::isMulticastAddress))
-          .filter(not(InetAddress::isLoopbackAddress))
-          .map(InetAddress::getHostAddress)
-          .filter(notEmpty())
-          .filter(adr -> notStartsWith().apply(adr, "127"))
-          .filter(adr -> notStartsWith().apply(adr, "169.254"))
-          .filter(adr -> notStartsWith().apply(adr, "255.255.255.255"))
-          .filter(adr -> notStartsWith().apply(adr, "255.255.255.255"))
-          .filter(adr -> notStartsWith().apply(adr, "0.0.0.0"))
-          //            .filter(adr -> range(224, 240).noneMatch(nr -> adr.startsWith(valueOf(nr))))
-          .findFirst().orElse("localhost");
-    };
-  }
 
   static CheckedFunction<String, Properties> propertyReaderMemoized() {
     return (CheckedFunction<String, Properties>) memoize(propertyReader());
@@ -290,7 +258,7 @@ public interface BrowserDriverFunctions extends HasLogger {
       final String targetAddress = pair.getT2();
 
       final String ip = (targetAddress.endsWith(SELENIUM_GRID_PROPERTIES_LOCALE_IP))
-                        ? localeIP().get()
+                        ? NetworkFunctions.localeIP().get()
                         : targetAddress;
       return
           match(
