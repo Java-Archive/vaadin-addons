@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.rapidpm</groupId>
+		<artifactId>rapidpm-vaadin-addons-modules-container</artifactId>
+		<version>0.1.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>rapidpm-vaadin-addons-modules-container-initializer-spring-boot</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>org.rapidpm</groupId>
+			<artifactId>rapidpm-vaadin-addons-modules-container-initializer</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.rapidpm</groupId>
+			<artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>1.5.9.RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+		</dependency>
+	</dependencies>
+</project>

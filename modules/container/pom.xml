@@ -12,5 +12,6 @@
 		<module>initializer</module>
 		<module>initializer-rapidpm</module>
 		<module>initializer-addon-test-helper</module>
+		<module>initializer-spring-boot</module>
 	</modules>
 </project>
