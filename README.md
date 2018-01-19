@@ -33,9 +33,19 @@ Have a look at the tests or better, ask me ;-)
 email: [mailto:sven.ruppert@gmail.com](mailto:sven.ruppert@gmail.com)
 Twitter: [https://twitter.com/SvenRuppert](https://twitter.com/SvenRuppert) 
 
+## Configuration
+The Add on is configured by a bunch of files. You have to place them in a folder called `.testbenchextension` is folder can be located at different places:
+  1. The root of the classpath
+  1. The current work directory
+  1. The users home directory
+  1. In a directory specified by the property `rapidm.configlocation`
+  
+Properties defined in the higher locations override properties the lower one.
 
+Templates for the configuration are placed in the `.testbenchextentsions` directories in the modules.
+  
 ## Selenoid in Docker
-Selenoid is a nice alternative for Selenium written in Go.
+Selenoid is a nice alternative for Selenium-Hub written in GO.
 Give it a try and check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
 One easy way of using it, will be based on Docker.
 
