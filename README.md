@@ -45,7 +45,7 @@ Properties defined in the higher locations override properties the lower one.
 Templates for the configuration are placed in the `.testbenchextentsions` directories in the modules.
   
 ## Selenoid in Docker
-Selenoid is a nice alternative for Selenium written in Go.
+Selenoid is a nice alternative for Selenium-Hub written in GO.
 Give it a try and check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
 One easy way of using it, will be based on Docker.
 
