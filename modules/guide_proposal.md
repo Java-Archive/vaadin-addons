@@ -1,3 +1,11 @@
+# Grundidee
+
+Es werden in der Konfig `Grids` definiert. Ein `Grid` beschreibt eine technische Verbindung zu einem Webdriver und gibt an, welche Browser in welchen Version auf welchen Betriebssystem dieses `Grid` unterstützt.
+
+Alle `@VaadinCompatTests` laufen grundsätzlich auf allen Browser/Version/OS Kombination der aktiven Grids. Grids die ein `Tag` besitzen werden nur von Tests genutzt die auch dieses `Tag` besitzen.
+
+Grundsätzlich sind alle Grids aktiv, lediglich wenn explizit eine Auswahl von aktiven Grids getroffen wird, ist dies nicht der Fall. 
+
 # Getting started
 
   1. Testbench key installieren
