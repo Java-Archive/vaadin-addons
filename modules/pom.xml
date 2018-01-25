@@ -16,8 +16,9 @@
   <modules>
     <module>junit5</module>
     <module>framework</module>
-    <module>testbench</module>
     <module>container</module>
+    <module>testbench</module>
+    <module>di</module>
   </modules>
 
   <dependencyManagement>
@@ -41,6 +42,22 @@
       <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-dependencies-core-logger</artifactId>
     </dependency>
+
+    <!--Version definitions-->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <scope>test</scope>
+      <version>${junit.platform.version}</version>
+    </dependency>
+    <!-- Only required to run tests in an IDE that bundles an older version -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+      <version>${junit.jupiter.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>

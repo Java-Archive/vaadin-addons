@@ -76,22 +76,22 @@ public class PageObjectInvocationContextProvider implements TestTemplateInvocati
           public Object resolveParameter(ParameterContext parameterContext,
                                          ExtensionContext extensionContext) {
 
-            Class<?> pageObject = parameterContext
+            Class<?> pageObjectClass = parameterContext
                 .getParameter()
                 .getType();
 
             final Result<VaadinPageObject> po = ((CheckedFunction<Class<?>, VaadinPageObject>) aClass -> {
-              final Constructor<?> constructor = pageObject.getConstructor(WebDriver.class);
+              final Constructor<?> constructor = pageObjectClass.getConstructor(WebDriver.class);
               return VaadinPageObject.class.cast(constructor.newInstance(parameter));
             })
-                .apply(pageObject);
+                .apply(pageObjectClass);
 
             po.ifPresentOrElse(
-                success -> logger().fine("pageobject of type " + pageObject.getSimpleName() + " was created with " + webdrivername().apply(parameter)),
+                success -> logger().fine("pageobject of type " + pageObjectClass.getSimpleName() + " was created with " + webdrivername().apply(parameter)),
                 failed -> logger().warning("was not able to create PageObjectInstance " + failed)
             );
             po.ifAbsent(() -> {
-              throw new ParameterResolutionException("was not able to create PageObjectInstance of type " + pageObject);
+              throw new ParameterResolutionException("was not able to create PageObjectInstance of type " + pageObjectClass);
             });
             return po.get();
           }

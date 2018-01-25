@@ -1,28 +1,7 @@
 package org.rapidpm.vaadin.addons.testbench;
 
-import static java.lang.System.setProperty;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static org.rapidpm.frp.matcher.Case.match;
-import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.memoizer.Memoizer.memoize;
-import static org.rapidpm.frp.model.Result.failure;
-import static org.rapidpm.frp.model.Result.ofNullable;
-import static org.rapidpm.frp.model.Result.success;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import com.google.gson.stream.JsonReader;
+import com.vaadin.testbench.TestBench;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -43,8 +22,23 @@ import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.frp.model.serial.Pair;
 import org.rapidpm.vaadin.addons.framework.NetworkFunctions;
-import com.google.gson.stream.JsonReader;
-import com.vaadin.testbench.TestBench;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static java.lang.System.setProperty;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static org.rapidpm.frp.matcher.Case.match;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.memoizer.Memoizer.memoize;
+import static org.rapidpm.frp.model.Result.*;
 
 /**
  *
@@ -65,6 +59,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   String SELENIUM_GRID_PROPERTIES_NO_GRID        = "nogrid";
 
   String CONFIG_FOLDER = ".testbenchextensions/";
+
   static CheckedFunction<String, Properties> propertyReaderMemoized() {
     return (CheckedFunction<String, Properties>) memoize(propertyReader());
   }
