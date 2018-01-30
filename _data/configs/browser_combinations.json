@@ -14,13 +14,6 @@
       "version": "62.0",
       "enableVideo": false,
       "enableVNC": false
-    },
-    {
-      "browserName": "chrome",
-      "platform": "Linux",
-      "version": "63.0",
-      "enableVideo": false,
-      "enableVNC": false
     }
   ]
 }
