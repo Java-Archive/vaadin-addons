@@ -5,11 +5,11 @@ workspace:
 pipeline:
   build:
     image: maven:${JDK_VERSION}
-
+    secrets: [tb_license]
 #    image: maven:3.5-jdk-8
     pull: true
     commands:
-      - echo ${tb_license}
+      - echo -n "$tb_license" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
