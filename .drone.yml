@@ -10,8 +10,6 @@ pipeline:
     pull: true
     commands:
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
-      - echo $${TB_LICENSE}
-      - cat /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
