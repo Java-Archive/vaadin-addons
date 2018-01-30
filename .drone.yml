@@ -1,0 +1,26 @@
+workspace:
+  base: /drone/src
+  path: rapidpm-vaadin-addons
+
+pipeline:
+  build:
+    image: maven:${JDK_VERSION}
+#    image: maven:3.5-jdk-8
+    pull: true
+    commands:
+      - mkdir /root/.m2
+      - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
+#      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
+#      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
+      - mvn clean
+      - mvn install
+      - mvn deploy
+
+matrix:
+  JDK_VERSION:
+#  - latest
+#  - 3.5-jdk-8
+  - 3.5-jdk-8-alpine
+#  - 3.5-jdk-8-slim
+#  - 3.5-ibmjava-8
+#  - 3.5-jdk-9
