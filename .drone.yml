@@ -9,7 +9,7 @@ pipeline:
 #    image: maven:3.5-jdk-8
     pull: true
     commands:
-      - echo ${TB_LICENSE}
+      - echo ${tb_license}
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
