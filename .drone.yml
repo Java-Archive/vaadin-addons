@@ -9,7 +9,10 @@ pipeline:
     pull: true
     commands:
       - mkdir /root/.m2
+      - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
+      - cp /drone/src/rapidpm-vaadin-addons/_data/vonfigs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
+      - cp /drone/src/rapidpm-vaadin-addons/_data/vonfigs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
       - mvn clean
