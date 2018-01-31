@@ -109,44 +109,56 @@
   </dependencies>
 
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.github.webdriverextensions</groupId>
-        <artifactId>webdriverextensions-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>install-drivers</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
-          <!--Distributed FS-->
-          <!--<installationDirectory>/Users/andidev/drivers</installationDirectory>-->
-          <installationDirectory>_data/webdrivers</installationDirectory>
-          <drivers>
-            <driver>
-              <name>safari</name>
-            </driver>
-            <driver>
-              <name>chromedriver</name>
-            </driver>
-            <driver>
-              <name>operadriver</name>
-            </driver>
-            <driver>
-              <name>geckodriver</name>
-            </driver>
-            <driver>
-              <name>phantomjs</name>
-            </driver>
-          </drivers>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
+
+  <profiles>
+    <profile>
+      <id>-vaadin-addon-testbench-webdrivers</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.webdriverextensions</groupId>
+            <artifactId>webdriverextensions-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>install-drivers</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
+              <!--Distributed FS-->
+              <!--<installationDirectory>/Users/andidev/drivers</installationDirectory>-->
+              <installationDirectory>_data/webdrivers</installationDirectory>
+              <drivers>
+                <driver>
+                  <name>safari</name>
+                </driver>
+                <driver>
+                  <name>chromedriver</name>
+                </driver>
+                <driver>
+                  <name>operadriver</name>
+                </driver>
+                <driver>
+                  <name>geckodriver</name>
+                </driver>
+                <driver>
+                  <name>phantomjs</name>
+                </driver>
+              </drivers>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+
+    </profile>
+  </profiles>
 
 </project>

@@ -5,6 +5,12 @@
 </center>
 
 # vaadin-addons
+
+
+
+
+
+
 This ist the first version of my TestBench Add On. **TestBench** is 
 from [https://vaadin.com/](https://vaadin.com/) and could 
 be found here [https://vaadin.com/testbench](https://vaadin.com/testbench).
@@ -60,16 +66,19 @@ docker pull selenoid/phantomjs:2.1.1
 
 This is needed to pull the docker images for the last 4 versions of the declared browsers.
 
-```bash
+````bash
 docker run --rm \
 -v /var/run/docker.sock:/var/run/docker.sock \
+-v `pwd`/selenoid/config:/root/.aerokube/selenoid/ \
 aerokube/cm:latest \
-selenoid \
-update \
+selenoid configure \
 --tmpfs 128 \
 --browsers chrome,firefox,opera,phantomjs \
---last-versions 4 > _data/selenoid/config/browsers.json
-```
+--last-versions 4
+````
+
+To reconfigure the browsers.json, delete the file in the folder
+selenoid/browsers.json and container.
 
 start the selenoid hub
 

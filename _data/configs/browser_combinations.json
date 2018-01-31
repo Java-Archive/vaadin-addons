@@ -1,0 +1,19 @@
+{
+  "browsers": [
+    {
+      "browserName": "chrome",
+      "platform": "Linux",
+      "version": "61.0",
+      "enableVideo": false,
+      "unittesting": true,
+      "enableVNC": false
+    },
+    {
+      "browserName": "chrome",
+      "platform": "Linux",
+      "version": "62.0",
+      "enableVideo": false,
+      "enableVNC": false
+    }
+  ]
+}

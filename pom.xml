@@ -8,7 +8,7 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.5.6-SNAPSHOT</version>
+    <version>3.5.6</version>
   </parent>
 
   <artifactId>rapidpm-vaadin-addons</artifactId>
@@ -72,27 +72,8 @@
 
   <dependencies>
     <!--RapidPM-->
-    <!--Version definitions-->
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<scope>test</scope>
-			<version>${junit.platform.version}</version>
-		</dependency>
-		<!-- Only required to run tests in an IDE that bundles an older version -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
-			<version>${junit.jupiter.version}</version>
-		</dependency>
-		<!-- Only required to run tests in an IDE that bundles an older version -->
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<scope>test</scope>
-			<version>${junit.vintage.version}</version>
-		</dependency>
+
+
   </dependencies>
 
 
@@ -157,11 +138,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.jupiter.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>${junit.vintage.version}</version>
           </dependency>
         </dependencies>
       </plugin>
