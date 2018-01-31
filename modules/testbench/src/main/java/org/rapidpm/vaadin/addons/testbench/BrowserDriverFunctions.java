@@ -211,22 +211,17 @@ public interface BrowserDriverFunctions extends HasLogger {
       return Result.success(result);
     };
   }
-
-
+  
   static Result<WebDriver> unittestingWebDriverInstance() {
-    final String unittesting = readSeleniumGridProperties().get().getProperty(UNITTESTING);
-    return (unittesting != null)
-           ? match(
-        matchCase(BrowserDriverFunctions::defaultRemoteWebDriverInstance),
-        matchCase(unittesting::isEmpty,
-                  () -> Result.failure(UNITTESTING + " should not be empty")
-        ),
-        matchCase(() -> unittesting.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
-                  BrowserDriverFunctions::defaultLocaleWebDriverInstance
-        )
-    )
-           : Result.failure("no target for " + UNITTESTING + " could be found.");
-
+    WebdriversConfig config = readConfig();
+    final String unittestingTarget = config.getUnittestingTarget();
+    final DesiredCapabilities unittestingDC = config.getUnittestingBrowser();
+    return (unittestingTarget != null) ? match(
+        matchCase(() ->   webDriverInstance().apply(unittestingDC, Pair.next(WebdriversConfig.UNITTESTING_TARGET, unittestingTarget))),
+        matchCase(unittestingTarget::isEmpty, () -> Result.failure(UNITTESTING + " should not be empty")),
+        matchCase(() -> unittestingTarget.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
+            () -> localWebDriverInstance().apply(unittestingDC.getBrowserName())))
+        : Result.failure("no target for " + UNITTESTING + " could be found.");
   }
 
   static Result<WebDriver> defaultLocaleWebDriverInstance() {
@@ -308,5 +303,11 @@ public interface BrowserDriverFunctions extends HasLogger {
           .map(Result::get)
           .collect(toList());
     };
+  }
+
+  static WebdriversConfig readConfig() {
+    Properties configProperties =
+        propertyReader().apply(CONFIG_FOLDER + "config").getOrElse(Properties::new);
+    return new WebdriversConfig(configProperties);
   }
 }

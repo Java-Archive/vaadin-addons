@@ -14,4 +14,5 @@ public class BrowserDriverFunctionsTest {
         .apply(BrowserDriverFunctions.CONFIG_FOLDER + "template_selenium-grids").get();
     assertEquals("locale", properties.get("unittesting"));
   }
+  
 }
