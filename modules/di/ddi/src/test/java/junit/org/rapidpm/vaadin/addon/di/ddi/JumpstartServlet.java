@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.rapidpm.vaadin.addon.di.ddi;
+package junit.org.rapidpm.vaadin.addon.di.ddi;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
+import org.rapidpm.vaadin.addon.di.ddi.DDIVaadinServlet;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.List;
@@ -34,7 +35,6 @@ import static java.util.Collections.singletonList;
 @VaadinServletConfiguration(ui = JumpstartUI.class, productionMode = false)
 public class JumpstartServlet extends DDIVaadinServlet {
 
-  //extract with <functional Interface
   @Override
   public List<String> topLevelPackagesToActivate() {
     return singletonList("org.rapidpm");

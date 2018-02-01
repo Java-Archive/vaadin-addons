@@ -20,8 +20,8 @@
 
     <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
 
-    <rapidpm-functional-reactive.version>0.1.0</rapidpm-functional-reactive.version>
-    <rapidpm-microservice.version>1.0.1</rapidpm-microservice.version>
+    <rapidpm-functional-reactive.version>0.5.0</rapidpm-functional-reactive.version>
+    <rapidpm-microservice.version>1.0.2</rapidpm-microservice.version>
 
     <vaadin.version>8.2.1</vaadin.version>
     <vaadin-testbench.version>5.1.1</vaadin-testbench.version>
