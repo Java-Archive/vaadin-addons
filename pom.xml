@@ -22,9 +22,6 @@
     <url>http://www.functional-reactive.org</url>
   </organization>
   <modules>
-    <!--<module>rapidpm-vaadin-component-testing</module>-->
-    <!--<module>rapidpm-vaadin-addons-framework</module>-->
-    <!--<module>rapidpm-vaadin-addons-protools</module>-->
     <module>bom</module>
     <module>modules</module>
   </modules>
