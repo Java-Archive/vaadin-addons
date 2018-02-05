@@ -1,7 +1,26 @@
 package org.rapidpm.vaadin.addons.testbench;
 
-import com.google.gson.stream.JsonReader;
-import com.vaadin.testbench.TestBench;
+import static java.lang.System.setProperty;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static org.rapidpm.frp.matcher.Case.match;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.memoizer.Memoizer.memoize;
+import static org.rapidpm.frp.model.Result.failure;
+import static org.rapidpm.frp.model.Result.ofNullable;
+import static org.rapidpm.frp.model.Result.success;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,7 +33,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
-import org.rapidpm.dependencies.core.logger.Logger;
 import org.rapidpm.dependencies.core.properties.PropertiesResolver;
 import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.functions.CheckedFunction;
@@ -22,23 +40,8 @@ import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.frp.model.serial.Pair;
 import org.rapidpm.vaadin.addons.framework.NetworkFunctions;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static java.lang.System.setProperty;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
-import static org.rapidpm.frp.matcher.Case.match;
-import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.memoizer.Memoizer.memoize;
-import static org.rapidpm.frp.model.Result.*;
+import com.google.gson.stream.JsonReader;
+import com.vaadin.testbench.TestBench;
 
 /**
  *
@@ -134,6 +137,8 @@ public interface BrowserDriverFunctions extends HasLogger {
                                 .get(0), "too many or no default Browser specified..");
   }
 
+  @Deprecated
+  // Uses old config format
   static Supplier<Result<List<DesiredCapabilities>>> readDesiredCapabilities() {
     return () -> {
       final List<DesiredCapabilities> result = new ArrayList<>();
@@ -211,7 +216,7 @@ public interface BrowserDriverFunctions extends HasLogger {
       return Result.success(result);
     };
   }
-  
+
   static Result<WebDriver> unittestingWebDriverInstance() {
     WebdriversConfig config = readConfig();
     final String unittestingTarget = config.getUnittestingTarget();
@@ -224,26 +229,6 @@ public interface BrowserDriverFunctions extends HasLogger {
         : Result.failure("no target for " + UNITTESTING + " could be found.");
   }
 
-  static Result<WebDriver> defaultLocaleWebDriverInstance() {
-    final Result<DesiredCapabilities> dcResult = readDefaultDesiredCapability().get();
-    return (dcResult.isPresent())
-           ? localWebDriverInstance().apply(dcResult.get().getBrowserName())
-           : dcResult.asFailure();
-
-  }
-
-  static Result<WebDriver> defaultRemoteWebDriverInstance() {
-    final Result<DesiredCapabilities> dcResult    = readDefaultDesiredCapability().get();
-    final String                      unittesting = readSeleniumGridProperties().get().getProperty(UNITTESTING);
-
-    return (dcResult.isPresent())
-           ? (unittesting != null)
-             ? webDriverInstance().apply(dcResult.get(), Pair.next(UNITTESTING, unittesting))
-             : Result.failure(UNITTESTING + " should not be empty")
-           : dcResult.asFailure();
-  }
-
-
   static BiFunction<DesiredCapabilities, Pair<String, String>, Result<WebDriver>> webDriverInstance() {
     return (desiredCapability, pair) -> {
       final String key           = pair.getT1();
@@ -254,11 +239,7 @@ public interface BrowserDriverFunctions extends HasLogger {
                         : targetAddress;
       return
           match(
-              matchCase(() -> ((CheckedSupplier<WebDriver>) () -> {
-                          final URL             url             = new URL("http://" + ip + ":4444/wd/hub");
-                          final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
-                          return TestBench.createDriver(remoteWebDriver);
-                        }).get()
+              matchCase(() -> remoteWebDriverInstance(desiredCapability, ip).get()
               ),
               matchCase(() -> key.equals(SELENIUM_GRID_PROPERTIES_NO_GRID),
                         () -> localWebDriverInstance()
@@ -268,42 +249,33 @@ public interface BrowserDriverFunctions extends HasLogger {
     };
   }
 
+  static CheckedSupplier<WebDriver> remoteWebDriverInstance(DesiredCapabilities desiredCapability,
+      final String ip) {
+    return () -> {
+      final URL url = new URL("http://" + ip + ":4444/wd/hub");
+      final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
+      return TestBench.createDriver(remoteWebDriver);
+    };
+  }
 
   static Supplier<List<WebDriver>> webDriverInstances() {
     return () -> {
+      final WebdriversConfig config = readConfig();
+      List<WebDriver> webDrivers = new ArrayList<>();
 
-      final Properties properties = readSeleniumGridProperties().get();
-
-      return readDesiredCapabilities()
-          .get()
-          .getOrElse(Collections::emptyList) //TODO check if needed
-          .stream()
-          .map((desiredCapability) -> {
-
-            //for all selenium ips
-            return properties
-                .entrySet()
-                .stream()
-                .map(e -> {
-                  final String key           = (String) e.getKey();
-                  final String targetAddress = (String) e.getValue();
-                  return webDriverInstance().apply(desiredCapability, Pair.next(key, targetAddress));
-                })
-                .peek(r -> r.ifPresentOrElse(
-                    success -> { },
-                    failed -> {
-                      Logger.getLogger(WebDriverFunctions.class).warning("failed = " + failed);
-                      Logger.getLogger(WebDriverFunctions.class).warning("desiredCapability = " + desiredCapability);
-                    }
-                ))
-                .filter(Result::isPresent)
-                .collect(toList());
-          })
-          .flatMap(Collection::stream)
-          .map(Result::get)
-          .collect(toList());
-    };
-  }
+       for (GridConfig gridConfg : config.getGridConfigs()) {
+         boolean localeBrowser = gridConfg.getTarget().equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER);
+         for (DesiredCapabilities desiredCapability : gridConfg.getDesiredCapabilities()) {
+           if (localeBrowser) {
+             webDrivers.add(localWebDriverInstance().apply(desiredCapability.getBrowserName()).get());
+           } else {
+             webDrivers.add(remoteWebDriverInstance(desiredCapability, gridConfg.getTarget()).get().get());
+           }
+         }
+       }
+      return webDrivers;
+      };
+    }
 
   static WebdriversConfig readConfig() {
     Properties configProperties =
