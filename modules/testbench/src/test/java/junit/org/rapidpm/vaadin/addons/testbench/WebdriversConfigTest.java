@@ -1,12 +1,16 @@
 package junit.org.rapidpm.vaadin.addons.testbench;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.CONFIG_FOLDER;
+import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER;
+import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.propertyReader;
+import java.util.List;
 import java.util.Properties;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.*;
 import org.rapidpm.frp.model.Result;
+import org.rapidpm.vaadin.addons.testbench.GridConfig;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfig;
 
 public class WebdriversConfigTest {
@@ -17,6 +21,8 @@ public class WebdriversConfigTest {
 
     assertEquals(DesiredCapabilities.chrome(), config.getUnittestingBrowser());
     assertEquals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER, config.getUnittestingTarget());
+
+    assertEquals(0, config.getGridConfigs().size());
   }
 
   @Test
@@ -29,5 +35,17 @@ public class WebdriversConfigTest {
 
     assertEquals(DesiredCapabilities.firefox(), config.getUnittestingBrowser());
     assertEquals("localhost", config.getUnittestingTarget());
+
+    assertEquals(1, config.getGridConfigs().size());
+
+    GridConfig gridConfig = config.getGridConfigs().get(0);
+
+    assertEquals("selenoid", gridConfig.getName());
+    assertEquals("localhost", gridConfig.getTarget());
+
+    List<DesiredCapabilities> desiredCapabilities = gridConfig.getDesiredCapabilities();
+
+    assertEquals(4, desiredCapabilities.size());
   }
+
 }

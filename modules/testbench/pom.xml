@@ -44,6 +44,12 @@
     	<artifactId>rapidpm-vaadin-addons-modules-container-initializer-rapidpm</artifactId>
     	<scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>net.vergien.bau</groupId>
+    	<artifactId>bean-auto-utils</artifactId>
+    	<version>0.0.6</version>
+    	<optional>true</optional>
+    </dependency>
     <!--Core Vaadin Stuff-->
     <dependency>
       <groupId>javax.servlet</groupId>
