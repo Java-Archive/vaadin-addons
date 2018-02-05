@@ -308,6 +308,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   static WebdriversConfig readConfig() {
     Properties configProperties =
         propertyReader().apply(CONFIG_FOLDER + "config").getOrElse(Properties::new);
-    return new WebdriversConfig(configProperties);
+    WebdriversConfigFactory factory = new WebdriversConfigFactory();
+    return factory.createFromProperies(configProperties);
   }
 }

@@ -12,12 +12,15 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.vaadin.addons.testbench.GridConfig;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfig;
+import org.rapidpm.vaadin.addons.testbench.WebdriversConfigFactory;
 
 public class WebdriversConfigTest {
+  private WebdriversConfigFactory factory = new WebdriversConfigFactory();
+
   @Test
   @DisplayName("build default config")
   void test001() {
-    WebdriversConfig config = new WebdriversConfig(new Properties());
+    WebdriversConfig config = factory.createFromProperies(new Properties());
 
     assertEquals(DesiredCapabilities.chrome(), config.getUnittestingBrowser());
     assertEquals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER, config.getUnittestingTarget());
@@ -31,7 +34,7 @@ public class WebdriversConfigTest {
     Result<Properties> apply = propertyReader().apply(CONFIG_FOLDER + "config-002");
     Properties configProperties = apply.get();
 
-    WebdriversConfig config = new WebdriversConfig(configProperties);
+    WebdriversConfig config = factory.createFromProperies(configProperties);
 
     assertEquals(DesiredCapabilities.firefox(), config.getUnittestingBrowser());
     assertEquals("localhost", config.getUnittestingTarget());
