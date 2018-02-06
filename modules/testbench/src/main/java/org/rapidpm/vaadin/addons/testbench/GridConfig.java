@@ -8,15 +8,26 @@ import net.vergien.beanautoutils.annotation.Bean;
 @Bean
 public class GridConfig {
 
+  public enum Type {
+    GENERIC, SELENOID
+  }
+
+  private final Type type;
   private final String name;
   private final String target;
   private final List<DesiredCapabilities> desiredCapabilities;
 
-  public GridConfig(String name, String target, List<DesiredCapabilities> desiredCapabilities) {
+  public GridConfig(Type type, String name, String target,
+      List<DesiredCapabilities> desiredCapabilities) {
     super();
+    this.type = type;
     this.name = name;
     this.target = target;
     this.desiredCapabilities = Collections.unmodifiableList(desiredCapabilities);
+  }
+
+  public Type getType() {
+    return type;
   }
 
   public String getName() {

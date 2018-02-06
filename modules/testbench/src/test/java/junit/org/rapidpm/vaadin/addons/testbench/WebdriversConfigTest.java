@@ -13,6 +13,7 @@ import org.rapidpm.frp.model.Result;
 import org.rapidpm.vaadin.addons.testbench.GridConfig;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfig;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfigFactory;
+import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
 
 public class WebdriversConfigTest {
   private WebdriversConfigFactory factory = new WebdriversConfigFactory();
@@ -39,16 +40,30 @@ public class WebdriversConfigTest {
     assertEquals(DesiredCapabilities.firefox(), config.getUnittestingBrowser());
     assertEquals("localhost", config.getUnittestingTarget());
 
-    assertEquals(1, config.getGridConfigs().size());
+    assertEquals(2, config.getGridConfigs().size());
 
-    GridConfig gridConfig = config.getGridConfigs().get(0);
+    GridConfig genericGridConfig = config.getGridConfigs().stream()
+        .filter(grid -> grid.getName().equals("generic")).findFirst().get();
 
-    assertEquals("selenoid", gridConfig.getName());
-    assertEquals("localhost", gridConfig.getTarget());
-
-    List<DesiredCapabilities> desiredCapabilities = gridConfig.getDesiredCapabilities();
+    assertEquals("localhost", genericGridConfig.getTarget());
+    assertEquals(Type.GENERIC, genericGridConfig.getType());
+    
+    List<DesiredCapabilities> desiredCapabilities = genericGridConfig.getDesiredCapabilities();
 
     assertEquals(4, desiredCapabilities.size());
+    
+    GridConfig selenoidGridConfig = config.getGridConfigs().stream()
+        .filter(grid -> grid.getName().equals("selenoid")).findFirst().get();
+    
+    List<DesiredCapabilities> slenoidDesiredCapabilities = selenoidGridConfig.getDesiredCapabilities();
+
+    assertEquals(2, slenoidDesiredCapabilities.size());
+    assertEquals(Type.SELENOID, selenoidGridConfig.getType());
+    
+    for(DesiredCapabilities desiredCapability: slenoidDesiredCapabilities) {
+      assertEquals(true, desiredCapability.asMap().get("enableVNC"));
+      assertEquals(true, desiredCapability.asMap().get("enableVideo"));
+    }
   }
 
 }

@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.dependencies.core.logger.HasLogger;
+import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
 
 public class WebdriversConfigFactory implements HasLogger {
 
@@ -45,15 +47,21 @@ public class WebdriversConfigFactory implements HasLogger {
 
     for (String gridName : gridNames) {
       String target = getGridTarget(configProperties, gridName);
-      grids
-          .add(new GridConfig(gridName, target, getDesiredCapapilites(configProperties, gridName)));
+      GridConfig.Type type = getGridType(configProperties, gridName);
+      grids.add(new GridConfig(type, gridName, target,
+          getDesiredCapapilites(configProperties, gridName, type)));
     }
 
     return grids;
   }
 
+  private Type getGridType(Properties configProperties, String gridName) {
+    String stringType = configProperties.getProperty(getGridNameKey(gridName) + ".type", "generic");
+    return Type.valueOf(stringType.toUpperCase());
+  }
+
   private List<DesiredCapabilities> getDesiredCapapilites(Properties configProperties,
-      String gridName) {
+      String gridName, Type type) {
     Set<String> oses = getOses(configProperties, gridName);
 
     Set<String> browsers = getBrowsers(configProperties, gridName);
@@ -62,12 +70,25 @@ public class WebdriversConfigFactory implements HasLogger {
     for (String os : oses) {
       for (String browser : browsers) {
         for (String version : getVersions(configProperties, gridName, browser)) {
-          desiredCapabilites
-              .add(new DesiredCapabilities(browser, version, Platform.fromString(os)));
+          DesiredCapabilities desiredCapability =
+              new DesiredCapabilities(browser, version, Platform.fromString(os));
+          if (type == Type.SELENOID) {
+            desiredCapability.setCapability(BrowserDriverFunctions.ENABLE_VIDEO,
+                getBoolean(configProperties, gridName, BrowserDriverFunctions.ENABLE_VIDEO));
+            desiredCapability.setCapability(BrowserDriverFunctions.ENABLE_VNC,
+                getBoolean(configProperties, gridName, BrowserDriverFunctions.ENABLE_VNC));
+          }
+          desiredCapabilites.add(desiredCapability);
         }
       }
     }
     return desiredCapabilites;
+  }
+
+  private boolean getBoolean(Properties configProperties, String gridName, String propertieName) {
+    String stringValue =
+        configProperties.getProperty(getGridNameKey(gridName) + "." + propertieName).trim();
+    return StringUtils.isNotBlank(stringValue) ? Boolean.valueOf(stringValue) : false;
   }
 
   private Set<String> getBrowsers(Properties configProperties, String gridName) {
