@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.Validate;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.rapidpm.dependencies.core.logger.HasLogger;
 
-public class WebdriversConfigFactory {
+public class WebdriversConfigFactory implements HasLogger {
 
   public WebdriversConfig createFromProperies(Properties configProperties) {
     String unittestingTarget;
@@ -29,6 +30,9 @@ public class WebdriversConfigFactory {
         configProperties.getProperty(UNITTESTING_TARGET, SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER);
     gridConfigs = Collections.unmodifiableList(createGridConfigs(configProperties));
 
+    logger().info("Browser for unittests is: " + unittestingBrowser.getBrowserName() + " on "
+        + unittestingTarget);
+    logger().info("Loaded " + gridConfigs.size() + " grid configuration(s)");
     return new WebdriversConfig(unittestingTarget, unittestingBrowser, gridConfigs);
   }
 
