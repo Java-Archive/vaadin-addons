@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.openqa.selenium.Platform;
@@ -38,8 +37,6 @@ import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
-import org.rapidpm.frp.model.serial.Pair;
-import org.rapidpm.vaadin.addons.framework.NetworkFunctions;
 import com.google.gson.stream.JsonReader;
 import com.vaadin.testbench.TestBench;
 
@@ -222,31 +219,11 @@ public interface BrowserDriverFunctions extends HasLogger {
     final String unittestingTarget = config.getUnittestingTarget();
     final DesiredCapabilities unittestingDC = config.getUnittestingBrowser();
     return (unittestingTarget != null) ? match(
-        matchCase(() ->   webDriverInstance().apply(unittestingDC, Pair.next(WebdriversConfig.UNITTESTING_TARGET, unittestingTarget))),
+        matchCase(() -> remoteWebDriverInstance(unittestingDC,  unittestingTarget).get()),
         matchCase(unittestingTarget::isEmpty, () -> Result.failure(UNITTESTING + " should not be empty")),
         matchCase(() -> unittestingTarget.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
             () -> localWebDriverInstance().apply(unittestingDC.getBrowserName())))
         : Result.failure("no target for " + UNITTESTING + " could be found.");
-  }
-
-  static BiFunction<DesiredCapabilities, Pair<String, String>, Result<WebDriver>> webDriverInstance() {
-    return (desiredCapability, pair) -> {
-      final String key           = pair.getT1();
-      final String targetAddress = pair.getT2();
-
-      final String ip = (targetAddress.endsWith(SELENIUM_GRID_PROPERTIES_LOCALE_IP))
-                        ? NetworkFunctions.localeIP().get()
-                        : targetAddress;
-      return
-          match(
-              matchCase(() -> remoteWebDriverInstance(desiredCapability, ip).get()
-              ),
-              matchCase(() -> key.equals(SELENIUM_GRID_PROPERTIES_NO_GRID),
-                        () -> localWebDriverInstance()
-                            .apply(desiredCapability.getBrowserName())
-              )
-          );
-    };
   }
 
   static CheckedSupplier<WebDriver> remoteWebDriverInstance(DesiredCapabilities desiredCapability,
