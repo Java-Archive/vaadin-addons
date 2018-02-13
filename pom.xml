@@ -18,8 +18,8 @@
 
   <inceptionYear>2017</inceptionYear>
   <organization>
-    <name>Functional Reactive</name>
-    <url>http://www.functional-reactive.org</url>
+    <name>RapidPM - Vaadin Developer</name>
+    <url>https://github.com/vaadin-developer</url>
   </organization>
   <modules>
     <module>bom</module>

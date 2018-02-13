@@ -25,7 +25,6 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.stream.Stream;
 
 
