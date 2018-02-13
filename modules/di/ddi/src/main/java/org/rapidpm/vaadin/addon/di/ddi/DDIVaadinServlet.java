@@ -19,22 +19,32 @@
 
 package org.rapidpm.vaadin.addon.di.ddi;
 
-import com.vaadin.server.DeploymentConfiguration;
-import com.vaadin.server.ServiceException;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinServletService;
+import com.vaadin.server.*;
+import com.vaadin.shared.Registration;
+import org.jsoup.nodes.Element;
+import org.rapidpm.frp.model.serial.Pair;
+import org.vaadin.leif.headertags.HeaderTagHandler;
 
 import javax.servlet.ServletException;
-import java.util.List;
+import java.util.stream.Stream;
 
 public abstract class DDIVaadinServlet extends VaadinServlet {
+
+  private Registration tagRegistration;
 
   @Override
   protected void servletInitialized() throws ServletException {
     super.servletInitialized();
+    HeaderTagHandler.init(getService());
+    tagRegistration = getService().addSessionInitListener(tagInitListener());
 
   }
 
+  @Override
+  public void destroy() {
+    super.destroy();
+    tagRegistration.remove();
+  }
   //add Metrics here
 
   @Override
@@ -49,6 +59,29 @@ public abstract class DDIVaadinServlet extends VaadinServlet {
    *
    * @return return
    */
-  public abstract List<String> topLevelPackagesToActivate();
+  public abstract Stream<String> topLevelPackagesToActivate();
 
+  public abstract Stream<Pair<String, String>> attributesToAddToHTML();
+
+  private SessionInitListener tagInitListener() {
+    return e ->
+        e.getSession()
+         .addBootstrapListener(new BootstrapListener() {
+           @Override
+           public void modifyBootstrapFragment(BootstrapFragmentResponse response) {
+             // NOP, this is for portlets etc
+           }
+
+           @Override
+           public void modifyBootstrapPage(BootstrapPageResponse response) {
+             final Element child = response
+                 .getDocument()
+                 .child(0);
+             attributesToAddToHTML()
+                 .forEach(p -> child.attr(p.getT1(), p.getT2()));
+
+
+           }
+         });
+  }
 }
