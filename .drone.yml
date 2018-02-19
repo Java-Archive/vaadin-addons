@@ -51,11 +51,10 @@ pipeline:
 
 matrix:
   JDK_VERSION:
-  - werbeo/maven-browser
-#  - svenruppert/maven-3.5-jdk-08
-#  - svenruppert/maven-3.5-jdk-09
-#  - svenruppert/maven-3.5-jdk-10
-#  - svenruppert/maven-3.5-jdk-oracle-09
-#  - svenruppert/maven-3.5-jdk-zulu-08
-#  - svenruppert/maven-3.5-jdk-zulu-09
+  - svenruppert/maven-3.5-jdk-08
+  - svenruppert/maven-3.5-jdk-09
+  - svenruppert/maven-3.5-jdk-10
+  - svenruppert/maven-3.5-jdk-oracle-09
+  - svenruppert/maven-3.5-jdk-zulu-08
+  - svenruppert/maven-3.5-jdk-zulu-09
   
