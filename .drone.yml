@@ -20,7 +20,7 @@ pipeline:
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
       - mvn clean
-      - mvn test
+      - mvn test -P repo-allow-vaadin
 
   deploy:
     image: ${JDK_VERSION}
@@ -38,7 +38,7 @@ pipeline:
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
 #      - mvn clean
-      - mvn deploy
+      - mvn deploy -P repo-allow-vaadin
     when:
         matrix:
           JDK_VERSION: maven:3.5-jdk-8-alpine
