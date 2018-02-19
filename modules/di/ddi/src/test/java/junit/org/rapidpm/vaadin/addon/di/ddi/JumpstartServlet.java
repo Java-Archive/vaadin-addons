@@ -17,14 +17,19 @@
  * under the License.
  */
 
-package org.rapidpm.vaadin.addon.di.ddi;
+package junit.org.rapidpm.vaadin.addon.di.ddi;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
+import org.rapidpm.frp.model.serial.Pair;
+import org.rapidpm.vaadin.addon.di.ddi.DDIVaadinServlet;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Stream.of;
+import static org.rapidpm.frp.model.serial.Pair.next;
 
 @WebServlet(
     urlPatterns = "/*",
@@ -34,9 +39,13 @@ import static java.util.Collections.singletonList;
 @VaadinServletConfiguration(ui = JumpstartUI.class, productionMode = false)
 public class JumpstartServlet extends DDIVaadinServlet {
 
-  //extract with <functional Interface
   @Override
-  public List<String> topLevelPackagesToActivate() {
-    return singletonList("org.rapidpm");
+  public Stream<String> topLevelPackagesToActivate() {
+    return of("org.rapidpm");
+  }
+
+  @Override
+  public Stream<Pair<String, String>> attributesToAddToHTML() {
+    return of(next("lang", "en_US"));
   }
 }

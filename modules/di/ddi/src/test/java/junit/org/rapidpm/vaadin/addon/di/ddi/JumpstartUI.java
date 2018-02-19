@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.rapidpm.vaadin.addon.di.ddi;
+package junit.org.rapidpm.vaadin.addon.di.ddi;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
@@ -25,6 +25,7 @@ import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import org.rapidpm.dependencies.core.logger.HasLogger;
+import org.rapidpm.vaadin.addon.di.ddi.JumpstartUIComponentFactory;
 
 import javax.inject.Inject;
 
