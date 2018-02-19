@@ -18,8 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
@@ -42,14 +40,6 @@ public class WebdriversConfigFactory implements HasLogger {
       chromeOptions.setBinary(chromeBinaryPath);
       DesiredCapabilities capabilitiesToAdd = new DesiredCapabilities();
       capabilitiesToAdd.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-      unittestingBrowser = addCapabilities(unittestingBrowser, capabilitiesToAdd.asMap());
-    }
-    
-    if(unittestingBrowser.getBrowserName().equals("firefox")) {
-      FirefoxOptions firefoxOptions = new FirefoxOptions();
-      firefoxOptions.setLogLevel(FirefoxDriverLogLevel.TRACE);
-      DesiredCapabilities capabilitiesToAdd = new DesiredCapabilities();
-      capabilitiesToAdd.setCapability(ChromeOptions.CAPABILITY, firefoxOptions);
       unittestingBrowser = addCapabilities(unittestingBrowser, capabilitiesToAdd.asMap());
     }
     
