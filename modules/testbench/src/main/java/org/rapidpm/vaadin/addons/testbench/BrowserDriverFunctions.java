@@ -1,6 +1,20 @@
 package org.rapidpm.vaadin.addons.testbench;
 
-import com.vaadin.testbench.TestBench;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static org.rapidpm.frp.matcher.Case.match;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.memoizer.Memoizer.memoize;
+import static org.rapidpm.frp.model.Result.failure;
+import static org.rapidpm.frp.model.Result.success;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,24 +33,8 @@ import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.frp.model.Tripel;
-
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.lang.System.setProperty;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static org.rapidpm.frp.matcher.Case.match;
-import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.memoizer.Memoizer.memoize;
-import static org.rapidpm.frp.model.Result.failure;
-import static org.rapidpm.frp.model.Result.success;
+import com.github.webdriverextensions.DriverPathLoader;
+import com.vaadin.testbench.TestBench;
 
 /**
  *
@@ -70,10 +68,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   }
 
   static CheckedExecutor readTestbenchProperties() {
-    return () -> propertyReader()
-        .apply(CONFIG_FOLDER + "testbench")
-        .ifPresent(p -> p.forEach((key, value) -> setProperty((String) key, (String) value))
-        );
+    return () -> DriverPathLoader.loadDriverPaths(null);
   }
 
   static Supplier<Properties> readSeleniumGridProperties() {
