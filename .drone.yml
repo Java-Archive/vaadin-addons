@@ -17,6 +17,7 @@ pipeline:
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
+      - cp drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/config-drone.properties /root/.testbenchextensions/config.properties
 #      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
 #      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
 #      TODO remove / fix this

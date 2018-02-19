@@ -6,13 +6,13 @@ import net.vergien.beanautoutils.annotation.Bean;
 
 @Bean
 public class WebdriversConfig {
+  public static final String CHROME_BINARY_PATH = "chrome.binary.path";
   public static final String UNITTESTING_BROWSER = "unittesting.browser";
   public static final String UNITTESTING_TARGET = "unittesting.target";
   public static final String COMPATTESTING = "compattesting";
   public static final String COMPATTESTING_GRID = COMPATTESTING + ".grid";
   private final String unittestingTarget;
   private final DesiredCapabilities unittestingBrowser;
-
   private final List<GridConfig> gridConfigs;
 
 

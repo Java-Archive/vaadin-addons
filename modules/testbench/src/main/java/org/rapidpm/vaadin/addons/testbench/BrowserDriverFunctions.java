@@ -78,15 +78,16 @@ public interface BrowserDriverFunctions extends HasLogger {
   }
 
 
-  static Function<String, Result<WebDriver>> localWebDriverInstance() {
-    return browserType -> {
+  static Function<DesiredCapabilities, Result<WebDriver>> localWebDriverInstance() {
+    return dc -> {
+      final String browserType = dc.getBrowserName();
       readTestbenchProperties().execute();
       return match(
           matchCase(() -> success(new PhantomJSDriver())),
           matchCase(browserType::isEmpty, () -> failure("browserType should not be empty")),
           matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(new PhantomJSDriver())),
           matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(new FirefoxDriver())),
-          matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver())),
+          matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver(dc))),
           matchCase(() -> browserType.equals(BrowserType.SAFARI), () -> success(new SafariDriver())),
           matchCase(() -> browserType.equals(BrowserType.OPERA), () -> success(new OperaDriver())),
           matchCase(() -> browserType.equals(BrowserType.OPERA_BLINK), () -> success(new OperaDriver())),
@@ -111,102 +112,6 @@ public interface BrowserDriverFunctions extends HasLogger {
         );
   }
 
-//  static Supplier<Result<DesiredCapabilities>> readDefaultDesiredCapability() {
-//    return () -> ofNullable(readDesiredCapabilities()
-//                                .get()
-//                                .stream()
-//                                .map(desiredCapabilitiesList -> desiredCapabilitiesList
-//                                    .stream()
-//                                    .filter(dc -> (dc.getCapability(UNITTESTING) != null)
-//                                                  ? Boolean.valueOf(dc.getCapability(UNITTESTING).toString())
-//                                                  : FALSE)
-//                                    .collect(toList()))
-//                                .filter(l -> l.size() == 1)
-//                                .findFirst()
-//                                .orElse(emptyList())
-//                                .get(0), "too many or no default Browser specified..");
-//  }
-
-  @Deprecated
-  // Uses old config format
-//  static Supplier<Result<List<DesiredCapabilities>>> readDesiredCapabilities() {
-//    return () -> {
-//      final List<DesiredCapabilities> result = new ArrayList<>();
-//      final File                      file   = new File(CONFIG_FOLDER + "browser_combinations.json");
-//      try (
-//          final FileReader fr = new FileReader(file);
-//          final JsonReader reader = new JsonReader(fr)) {
-//
-//        reader.beginObject();
-//        while (reader.hasNext()) {
-//          String name = reader.nextName();
-//          if (name.equals("browsers")) {
-//            reader.beginArray();
-//            while (reader.hasNext()) {
-//              reader.beginObject();
-//              String                    browser     = "";
-//              String                    version     = "";
-//              Platform                  platform    = Platform.ANY;
-//              final Map<String, Object> noNameProps = new HashMap<>();
-//              while (reader.hasNext()) {
-//                String property = reader.nextName();
-//                switch (property) {
-//                  case BROWSER_NAME:
-//                    browser = reader.nextString();
-//                    break;
-//                  case PLATFORM:
-//                    platform = Platform.fromString(reader.nextString());
-//                    break;
-//                  case VERSION:
-//                    version = reader.nextString();
-//                    break;
-//                  case ENABLE_VIDEO:
-//                    noNameProps.put(property, reader.nextBoolean());
-//                    break;
-//                  case UNITTESTING:
-//                    noNameProps.put(property, reader.nextBoolean());
-//                    break;
-//                  case ENABLE_VNC:
-//                    noNameProps.put(property, reader.nextBoolean());
-//                    break;
-//                  default:
-//                    noNameProps.put(property, reader.nextString());
-//                    break;
-//                }
-//              }
-//
-//              final Platform platformFinal = platform;
-//              final String   versionFinal  = version;
-//
-//              type2Capabilities()
-//                  .apply(browser)
-//                  .ifPresentOrElse(
-//                      success -> {
-//                        success.setPlatform(platformFinal);
-//                        success.setVersion(versionFinal);
-//                        noNameProps.forEach(success::setCapability);
-//                        result.add(success);
-//                      },
-//                      failed -> {
-//                      }
-//                  );
-//              ((CheckedExecutor) reader::endObject).execute();
-//            }
-//            reader.endArray();
-//          }
-//        }
-//        reader.endObject();
-//        reader.close();
-//
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//        return Result.failure(e.getMessage());
-//      }
-//
-//      return Result.success(result);
-//    };
-//  }
-
   static Result<WebDriver> unittestingWebDriverInstance() {
     WebdriversConfig          config            = readConfig();
     final String              unittestingTarget = config.getUnittestingTarget();
@@ -216,7 +121,7 @@ public interface BrowserDriverFunctions extends HasLogger {
         matchCase(() -> remoteWebDriverInstance(unittestingDC, unittestingTarget).get()),
         matchCase(unittestingTarget::isEmpty, () -> failure(UNITTESTING + " should not be empty")),
         matchCase(() -> unittestingTarget.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
-                  () -> localWebDriverInstance().apply(unittestingDC.getBrowserName())
+                () -> localWebDriverInstance().apply(unittestingDC)
         )
     )
            : failure("no target for " + UNITTESTING + " could be found.");
@@ -246,12 +151,10 @@ public interface BrowserDriverFunctions extends HasLogger {
               ))
           )
           .map(t -> (t.getT1())
-                    ? localWebDriverInstance().apply(t.getT2().getBrowserName())
+                    ? localWebDriverInstance().apply(t.getT2())
                     : remoteWebDriverInstance(t.getT2(), t.getT3()).get()
           )
-          .peek(r -> r.ifFailed((failed) -> Logger.getLogger(BrowserDriverFunctions.class).warning(failed)))
-//        .filter(Result::isPresent)
-//        .map(Result::get)
+          .peek(r -> r.ifFailed(failed -> Logger.getLogger(BrowserDriverFunctions.class).warning(failed)))
           .collect(groupingBy(Result::isPresent));
 
       if (resultMap.containsKey(FALSE)) {
