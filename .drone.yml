@@ -8,7 +8,7 @@ pipeline:
     secrets: [tb_license]
     pull: true
     commands:
-      - sudo apt install firefox
+      - apt install firefox
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
