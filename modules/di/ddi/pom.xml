@@ -30,7 +30,10 @@
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-client-compiled</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.vaadin.leif</groupId>
+      <artifactId>headertags</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.rapidpm.microservice</groupId>
       <artifactId>rapidpm-microservice-modules-core</artifactId>

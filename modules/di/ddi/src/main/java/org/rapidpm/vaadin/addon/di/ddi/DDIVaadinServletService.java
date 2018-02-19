@@ -25,7 +25,7 @@ import org.rapidpm.ddi.DI;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
+import java.util.stream.Stream;
 
 
 public class DDIVaadinServletService extends VaadinServletService implements HasLogger {
@@ -33,13 +33,12 @@ public class DDIVaadinServletService extends VaadinServletService implements Has
 
   public DDIVaadinServletService(VaadinServlet servlet,
                                  DeploymentConfiguration deploymentConfiguration,
-                                 List<String> topLevelPackagesToActivated)
+                                 Stream<String> topLevelPackagesToActivated)
       throws ServiceException {
 
     super(servlet, deploymentConfiguration);
 
     topLevelPackagesToActivated
-        .stream()
         .filter(pkg -> !DI.isPkgPrefixActivated(pkg))
         .forEach(DI::activatePackages);
 
@@ -71,3 +70,4 @@ public class DDIVaadinServletService extends VaadinServletService implements Has
   public void initialize() {
   }
 }
+

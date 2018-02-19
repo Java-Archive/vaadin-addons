@@ -5,21 +5,11 @@ import java.lang.reflect.Method;
 public interface ContainerInitializer {
 
 
-  default void beforeAll(Class<?> testClass) throws Exception {
-    // NOOP
-  }
+  void beforeAll(Class<?> testClass) throws Exception;
 
-  default void beforeEach(Method testMethod) throws Exception {
-    // NOOP
-  }
+  void beforeEach(Method testMethod) throws Exception;
 
+  void afterEach(Method testMethod) throws Exception;
 
-  default void afterEach(Method testMethod) throws Exception {
-    // NOOP
-  }
-
-
-  default void afterAll(Class<?> testClass) throws Exception {
-    // NOOP
-  }
+  void afterAll(Class<?> testClass) throws Exception;
 }

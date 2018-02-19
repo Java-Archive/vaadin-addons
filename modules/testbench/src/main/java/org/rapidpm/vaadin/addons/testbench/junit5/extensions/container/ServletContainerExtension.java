@@ -16,7 +16,7 @@ import org.rapidpm.dependencies.core.logger.HasLogger;
 public class ServletContainerExtension implements BeforeAllCallback, BeforeEachCallback,
     AfterEachCallback, AfterAllCallback, HasLogger {
 
-  private final ContainerInitializer containerIntializer;;
+  private final ContainerInitializer containerIntializer;
 
   public ServletContainerExtension() {
     ServiceLoader<ContainerInitializer> serviceLoader =
