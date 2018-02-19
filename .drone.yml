@@ -8,6 +8,8 @@ pipeline:
     secrets: [tb_license]
     pull: true
     commands:
+      - apt-get update -y
+      - apt-get dist-upgrade -y
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
