@@ -28,7 +28,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.dependencies.core.logger.Logger;
 import org.rapidpm.dependencies.core.properties.PropertiesResolver;
-import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
@@ -67,10 +66,6 @@ public interface BrowserDriverFunctions extends HasLogger {
     };
   }
 
-  static CheckedExecutor readTestbenchProperties() {
-    return () -> DriverPathLoader.loadDriverPaths(null);
-  }
-
   static Supplier<Properties> readSeleniumGridProperties() {
     return () -> propertyReader()
         .apply(CONFIG_FOLDER + "selenium-grids")
@@ -81,7 +76,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   static Function<DesiredCapabilities, Result<WebDriver>> localWebDriverInstance() {
     return dc -> {
       final String browserType = dc.getBrowserName();
-      readTestbenchProperties().execute();
+      DriverPathLoader.loadDriverPaths();
       return match(
           matchCase(() -> success(new PhantomJSDriver())),
           matchCase(browserType::isEmpty, () -> failure("browserType should not be empty")),

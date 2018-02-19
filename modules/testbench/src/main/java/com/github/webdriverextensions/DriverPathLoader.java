@@ -18,44 +18,26 @@ public class DriverPathLoader {
 
   private DriverPathLoader() {}
 
-  public static void loadDriverPaths(DriverPaths driverPaths) {
-    loadChromeDriverPath(driverPaths != null ? driverPaths.chrome() : null);
-    loadFirefoxDriverPath(driverPaths != null ? driverPaths.firefox() : null);
-    loadEdgeDriverPath(driverPaths != null ? driverPaths.edge() : null);
-    loadInternetExplorerDriverPath(driverPaths != null ? driverPaths.internetExplorer() : null);
-    loadPhantomJsDriverPath(driverPaths != null ? driverPaths.phantomJs() : null);
+  public static void loadDriverPaths() {
+    PropertyUtils.setPropertyIfNotExists(CHROME_DRIVER_PROPERTY_NAME, getChromeDriverDefaultPath());
+    PropertyUtils.setPropertyIfNotExists(FIREFOX_DRIVER_PROPERTY_NAME,
+        getFirefoxDriverDefaultPath());
+    PropertyUtils.setPropertyIfNotExists(EDGE_DRIVER_PROPERTY_NAME, getEdgeDefaultPath());
+    loadInternetExplorerDriverPath();
+    PropertyUtils.setPropertyIfNotExists(PHANTOMJS_BINARY_PROPERTY_NAME, getPhantomJsDefaultPath());
     makeSureDriversAreExecutable();
   }
 
-  private static void loadChromeDriverPath(String path) {
-    PropertyUtils.setPropertyIfNotExists(CHROME_DRIVER_PROPERTY_NAME, path);
-    PropertyUtils.setPropertyIfNotExists(CHROME_DRIVER_PROPERTY_NAME, getChromeDriverDefaultPath());
-  }
 
-  private static void loadFirefoxDriverPath(String path) {
-    PropertyUtils.setPropertyIfNotExists(FIREFOX_DRIVER_PROPERTY_NAME, path);
-    PropertyUtils.setPropertyIfNotExists(FIREFOX_DRIVER_PROPERTY_NAME,
-        getFirefoxDriverDefaultPath());
-  }
 
-  private static void loadEdgeDriverPath(String path) {
-    PropertyUtils.setPropertyIfNotExists(EDGE_DRIVER_PROPERTY_NAME, path);
-    PropertyUtils.setPropertyIfNotExists(EDGE_DRIVER_PROPERTY_NAME, getEdgeDefaultPath());
-  }
-
-  private static void loadInternetExplorerDriverPath(String path) {
+  private static void loadInternetExplorerDriverPath() {
     PropertyUtils.setPropertyIfNotExists(IE_DRIVER_PROPERTY_NAME,
         System.getProperty(INTERNET_EXPLORER_DRIVER_PROPERTY_NAME)); // Alternative property name
                                                                      // that follows naming
                                                                      // convention
-    PropertyUtils.setPropertyIfNotExists(IE_DRIVER_PROPERTY_NAME, path);
+
     PropertyUtils.setPropertyIfNotExists(IE_DRIVER_PROPERTY_NAME,
         getInternetExplorerDriverDefaultPath());
-  }
-
-  private static void loadPhantomJsDriverPath(String path) {
-    PropertyUtils.setPropertyIfNotExists(PHANTOMJS_BINARY_PROPERTY_NAME, path);
-    PropertyUtils.setPropertyIfNotExists(PHANTOMJS_BINARY_PROPERTY_NAME, getPhantomJsDefaultPath());
   }
 
   private static void makeSureDriversAreExecutable() {
