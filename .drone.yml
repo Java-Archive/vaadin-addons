@@ -8,6 +8,7 @@ pipeline:
     secrets: [tb_license]
     pull: true
     commands:
+      - lsb_release -a
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
