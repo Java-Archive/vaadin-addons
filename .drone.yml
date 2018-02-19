@@ -8,6 +8,8 @@ pipeline:
     secrets: [tb_license]
     pull: true
     commands:
+      - pwd
+      - exit 22
       - apt-get update
       - apt-get install chromium xvfb xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable -y --no-install-recommends
       - echo "Starting X virtual framebuffer (Xvfb) in background..."
