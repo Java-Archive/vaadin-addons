@@ -8,11 +8,6 @@ pipeline:
     secrets: [tb_license]
     pull: true
     commands:
-      - apt-get update
-      - apt-get install firefox-esr xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable -y
-      - echo "Starting X virtual framebuffer (Xvfb) in background..."
-      - Xvfb -ac :99 -screen 0 1280x1024x16 &
-      - export DISPLAY=:99
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
@@ -55,10 +50,11 @@ pipeline:
 
 matrix:
   JDK_VERSION:
-  - svenruppert/maven-3.5-jdk-08
-  - svenruppert/maven-3.5-jdk-09
-  - svenruppert/maven-3.5-jdk-10
-  - svenruppert/maven-3.5-jdk-oracle-09
-  - svenruppert/maven-3.5-jdk-zulu-08
-  - svenruppert/maven-3.5-jdk-zulu-09
+  - werbeo/maven-browser
+#  - svenruppert/maven-3.5-jdk-08
+#  - svenruppert/maven-3.5-jdk-09
+#  - svenruppert/maven-3.5-jdk-10
+#  - svenruppert/maven-3.5-jdk-oracle-09
+#  - svenruppert/maven-3.5-jdk-zulu-08
+#  - svenruppert/maven-3.5-jdk-zulu-09
   
