@@ -1,13 +1,5 @@
 package org.rapidpm.vaadin.addons.testbench;
-import static org.rapidpm.frp.matcher.Case.match;
-import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.model.Result.success;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.rapidpm.frp.model.Result;
+
 import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.TextFieldElement;
@@ -15,6 +7,16 @@ import com.vaadin.testbench.elementsbase.AbstractElement;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static org.rapidpm.frp.matcher.Case.match;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.model.Result.success;
 
 /**
  *
@@ -28,22 +30,21 @@ public interface TestbenchFunctions {
 
   static Function<WebDriver, WebDriver> unproxy() {
     return proxyedDriver -> (proxyedDriver instanceof TestBenchDriverProxy)
-        ? ((TestBenchDriverProxy) proxyedDriver).getActualDriver()
-        : proxyedDriver;
+                            ? ((TestBenchDriverProxy) proxyedDriver).getActualDriver()
+                            : proxyedDriver;
   }
 
   static Function<WebDriver, String> doToString() {
-    return driver -> {
-      Result<String> result = match(
-          matchCase(() -> success(driver.toString())),
-          matchCase(() -> driver instanceof RemoteWebDriver, () -> success(format((RemoteWebDriver) driver))));
-      return result.get();
-    };
+    return driver -> match(
+        matchCase(() -> success(driver.toString())),
+        matchCase(() -> driver instanceof RemoteWebDriver, () -> success(format((RemoteWebDriver) driver)))
+    )
+        .getOrElse(() -> " Mr NoName.... B-) ");
   }
 
   static String format(RemoteWebDriver driver) {
     return driver.getCapabilities().getBrowserName() + " " + driver.getCapabilities().getVersion()
-        + " / " + driver.getCapabilities().getPlatform();
+           + " / " + driver.getCapabilities().getPlatform();
   }
 
   static Function<Class<? extends AbstractComponent>, Optional<Class<? extends AbstractElement>>> conv() {

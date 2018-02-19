@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import com.google.auto.service.AutoService;
 
+import java.lang.reflect.Method;
+
 
 @AutoService(ContainerInitializer.class)
 public class SpringBootContainerInitializer implements ContainerInitializer {
@@ -23,6 +25,12 @@ public class SpringBootContainerInitializer implements ContainerInitializer {
     }
     applicationContext = SpringApplication.run(appClass, springBootConf.args());
   }
+
+  @Override
+  public void beforeEach(Method testMethod) throws Exception { }
+
+  @Override
+  public void afterEach(Method testMethod) throws Exception { }
 
   @Override
   public void afterAll(Class<?> testClass) throws Exception {
