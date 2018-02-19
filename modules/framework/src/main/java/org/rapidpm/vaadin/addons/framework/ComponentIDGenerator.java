@@ -24,6 +24,9 @@ public interface ComponentIDGenerator {
     return (id) -> id + "." + "caption";
   }
 
+  static Function<String, String> placeholder() {
+    return (id) -> id + "." + "placeholder";
+  }
 
   static BiFunction<Class, String, String> gridID() {
     return (uiClass, label) -> genericID().apply(uiClass, Grid.class, label);
