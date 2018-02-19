@@ -9,7 +9,7 @@ pipeline:
     pull: true
     commands:
       - apt-get update
-      - apt-get install firefox
+      - apt-get install chromium-browser
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
