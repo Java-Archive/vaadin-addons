@@ -11,9 +11,8 @@ public class BrowserDriverFunctionsTest {
   @DisplayName("test reading properties")
   void test001() {
     Properties properties = BrowserDriverFunctions.propertyReader()
-//        .apply(BrowserDriverFunctions.CONFIG_FOLDER + "template_selenium-grids").get();
-        .apply(BrowserDriverFunctions.CONFIG_FOLDER + "config.properties").get();
-    assertEquals("locale", properties.get("unittesting"));
+        .apply(BrowserDriverFunctions.CONFIG_FOLDER + "config").get();
+    assertEquals("locale", properties.get("unittesting.target"));
   }
   
 }
