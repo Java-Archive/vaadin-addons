@@ -23,6 +23,11 @@ public class RapidPMContainerInitializer implements ContainerInitializer, HasLog
   }
 
   @Override
+  public void afterAll(Class<?> testClass) throws Exception {
+    //nothing
+  }
+
+  @Override
   public void beforeAll(Class<?> testClass) throws Exception {
     final String userVaadinServerIP = localeIP().get();
     logger().info(
