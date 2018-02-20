@@ -12,15 +12,16 @@ pipeline:
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
+      - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
 #      TODO remove / fix this
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
-      - mvn clean
-      - mvn test
+      - mvn clean --batch-mode
+      - mvn test -P repo-allow-vaadin --batch-mode
 
   deploy:
     image: ${JDK_VERSION}
@@ -30,15 +31,15 @@ pipeline:
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
 #      TODO remove / fix this
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
-      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
+#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
 #      - mvn clean
-      - mvn deploy
+      - mvn deploy -P repo-allow-vaadin
     when:
         matrix:
           JDK_VERSION: maven:3.5-jdk-8-alpine
@@ -49,13 +50,10 @@ pipeline:
 
 matrix:
   JDK_VERSION:
-  - maven:latest
-  - maven:3.5-jdk-8-alpine
-  - maven:3.5-jdk-9
+  - svenruppert/maven-3.5-jdk-08
+  - svenruppert/maven-3.5-jdk-09
   - svenruppert/maven-3.5-jdk-10
-#  - maven:3.5-ibmjava-8
-#  - maven:3.5-ibmjava-9
-#  - maven:3.5-jdk-8
-#  - maven:3.5-jdk-8-slim
-#  - maven:3.5-ibmjava-8-alpine
-#  - maven:3.5-ibmjava-9-alpine
+  - svenruppert/maven-3.5-jdk-oracle-09
+  - svenruppert/maven-3.5-jdk-zulu-08
+  - svenruppert/maven-3.5-jdk-zulu-09
+  

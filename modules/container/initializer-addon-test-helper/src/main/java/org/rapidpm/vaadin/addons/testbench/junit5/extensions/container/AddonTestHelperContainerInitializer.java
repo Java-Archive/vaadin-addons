@@ -6,6 +6,8 @@ import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.vaadin.addonhelpers.TServer;
 import com.google.auto.service.AutoService;
 
+import java.lang.reflect.Method;
+
 @AutoService(ContainerInitializer.class)
 public class AddonTestHelperContainerInitializer implements ContainerInitializer, HasLogger {
 
@@ -26,6 +28,12 @@ public class AddonTestHelperContainerInitializer implements ContainerInitializer
     TServer tserver = new TServer();
     server = tserver.startServer();
   }
+
+  @Override
+  public void beforeEach(Method testMethod) throws Exception { }
+
+  @Override
+  public void afterEach(Method testMethod) throws Exception { }
 
   @Override
   public void afterAll(Class<?> testClass) throws Exception {
