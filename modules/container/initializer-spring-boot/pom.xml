@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.rapidpm</groupId>
 		<artifactId>rapidpm-vaadin-addons-modules-container</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>0.2.0</version>
 	</parent>
 	<artifactId>rapidpm-vaadin-addons-modules-container-initializer-spring-boot</artifactId>
 	<dependencies>
