@@ -69,8 +69,6 @@
 
   <dependencies>
     <!--RapidPM-->
-
-
   </dependencies>
 
 
@@ -140,4 +138,24 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>sys-nexus-deploy</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <distributionManagement>
+        <repository>
+          <id>sonatype-nexus</id>
+          <url>${sonatype-nexus-url}</url>
+        </repository>
+        <snapshotRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <url>${sonatype-nexus-snapshots-url}</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
 </project>
