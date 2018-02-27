@@ -7,7 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -18,7 +17,7 @@ import org.rapidpm.dependencies.core.properties.PropertiesResolver;
 import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
-import org.rapidpm.frp.model.Tripel;
+import org.rapidpm.frp.model.Triple;
 
 import java.net.URL;
 import java.util.List;
@@ -79,9 +78,8 @@ public interface BrowserDriverFunctions extends HasLogger {
       final String browserType = dc.getBrowserName();
       DriverPathLoader.loadDriverPaths();
       return match(
-          matchCase(() -> success(new PhantomJSDriver())),
+          matchCase(() -> failure("browserType : no driver selected")),
           matchCase(browserType::isEmpty, () -> failure("browserType should not be empty")),
-          matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(new PhantomJSDriver())),
           matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(new FirefoxDriver())),
           matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver(dc))),
           matchCase(() -> browserType.equals(BrowserType.SAFARI), () -> success(new SafariDriver())),
@@ -141,7 +139,7 @@ public interface BrowserDriverFunctions extends HasLogger {
           .flatMap(gridConfig -> gridConfig
               .getDesiredCapabilities()
               .stream()
-              .map(dc -> new Tripel<>(gridConfig.getTarget().equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
+              .map(dc -> new Triple<>(gridConfig.getTarget().equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
                                       dc,
                                       gridConfig.getTarget()
               ))
