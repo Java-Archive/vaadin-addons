@@ -143,9 +143,6 @@
               <installationDirectory>_data/webdrivers</installationDirectory>
               <drivers>
                 <driver>
-                  <name>safari</name>
-                </driver>
-                <driver>
                   <name>chromedriver</name>
                 </driver>
                 <driver>
@@ -153,9 +150,6 @@
                 </driver>
                 <driver>
                   <name>geckodriver</name>
-                </driver>
-                <driver>
-                  <name>phantomjs</name>
                 </driver>
               </drivers>
             </configuration>
