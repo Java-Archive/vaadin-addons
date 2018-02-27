@@ -24,7 +24,7 @@ public class AddonTestHelperContainerInitializer implements ContainerInitializer
         KEY_VAADIN_SERVER_IP + " ServletContainerExtension - will be -> " + userVaadinServerIP);
     System.setProperty(KEY_VAADIN_SERVER_IP, userVaadinServerIP);
 
-    System.setProperty(KEY_VAADIN_SERVER_PORT, "9998");
+    System.setProperty(KEY_VAADIN_SERVER_PORT, "9998"); //TODO Port should be random, for concurrent tests
     TServer tserver = new TServer();
     server = tserver.startServer();
   }

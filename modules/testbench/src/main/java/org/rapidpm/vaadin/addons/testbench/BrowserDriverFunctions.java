@@ -1,20 +1,7 @@
 package org.rapidpm.vaadin.addons.testbench;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static org.rapidpm.frp.matcher.Case.match;
-import static org.rapidpm.frp.matcher.Case.matchCase;
-import static org.rapidpm.frp.memoizer.Memoizer.memoize;
-import static org.rapidpm.frp.model.Result.failure;
-import static org.rapidpm.frp.model.Result.success;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import com.github.webdriverextensions.DriverPathLoader;
+import com.vaadin.testbench.TestBench;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -32,8 +19,22 @@ import org.rapidpm.frp.functions.CheckedFunction;
 import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.frp.model.Tripel;
-import com.github.webdriverextensions.DriverPathLoader;
-import com.vaadin.testbench.TestBench;
+
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static org.rapidpm.frp.matcher.Case.match;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.model.Result.failure;
+import static org.rapidpm.frp.model.Result.success;
 
 /**
  *
@@ -55,9 +56,9 @@ public interface BrowserDriverFunctions extends HasLogger {
 
   String CONFIG_FOLDER = ".testbenchextensions/";
 
-  static CheckedFunction<String, Properties> propertyReaderMemoized() {
-    return (CheckedFunction<String, Properties>) memoize(propertyReader());
-  }
+//  static CheckedFunction<String, Properties> propertyReaderMemoized() {
+//    return (CheckedFunction<String, Properties>) memoize(propertyReader());
+//  }
 
   static CheckedFunction<String, Properties> propertyReader() {
     return (filename) -> {
@@ -66,11 +67,11 @@ public interface BrowserDriverFunctions extends HasLogger {
     };
   }
 
-  static Supplier<Properties> readSeleniumGridProperties() {
-    return () -> propertyReader()
-        .apply(CONFIG_FOLDER + "selenium-grids")
-        .getOrElse(Properties::new);
-  }
+//  static Supplier<Properties> readSeleniumGridProperties() {
+//    return () -> propertyReader()
+//        .apply(CONFIG_FOLDER + "selenium-grids")
+//        .getOrElse(Properties::new);
+//  }
 
 
   static Function<DesiredCapabilities, Result<WebDriver>> localWebDriverInstance() {
@@ -108,7 +109,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   }
 
   static Result<WebDriver> unittestingWebDriverInstance() {
-    WebdriversConfig          config            = readConfig();
+    final WebdriversConfig    config            = readConfig();
     final String              unittestingTarget = config.getUnittestingTarget();
     final DesiredCapabilities unittestingDC     = config.getUnittestingBrowser();
     return (unittestingTarget != null)
@@ -116,7 +117,7 @@ public interface BrowserDriverFunctions extends HasLogger {
         matchCase(() -> remoteWebDriverInstance(unittestingDC, unittestingTarget).get()),
         matchCase(unittestingTarget::isEmpty, () -> failure(UNITTESTING + " should not be empty")),
         matchCase(() -> unittestingTarget.equals(SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER),
-                () -> localWebDriverInstance().apply(unittestingDC)
+                  () -> localWebDriverInstance().apply(unittestingDC)
         )
     )
            : failure("no target for " + UNITTESTING + " could be found.");

@@ -8,8 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static java.lang.System.getProperties;
-import static org.rapidpm.microservice.MainUndertow.DEFAULT_SERVLET_PORT;
-import static org.rapidpm.microservice.MainUndertow.MYAPP;
+import static org.rapidpm.microservice.MainUndertow.*;
 import static org.rapidpm.vaadin.addons.testbench.WebDriverFunctions.takeScreenShot;
 
 /**
@@ -39,11 +38,9 @@ public interface VaadinPageObject extends HasDriver, HasLogger {
   }
 
   default Supplier<String> port() {
-    //TODO per properties
-    return () -> property().apply(KEY_VAADIN_SERVER_PORT, DEFAULT_SERVLET_PORT + "");
+    return () -> property().apply(KEY_VAADIN_SERVER_PORT, property().apply(SERVLET_PORT_PROPERTY, DEFAULT_SERVLET_PORT + ""));
   }
 
-  //TODO per properties
   default Supplier<String> webapp() {
     return () -> property().apply(KEY_VAADIN_SERVER_WEBAPP, MYAPP);
   }
