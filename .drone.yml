@@ -20,6 +20,7 @@ pipeline:
 
   deploy:
     image: ${JDK_VERSION}
+    secrets: [tb_license]
     pull: true
     commands:
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
