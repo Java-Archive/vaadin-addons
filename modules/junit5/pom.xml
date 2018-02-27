@@ -14,12 +14,6 @@
 
   <dependencies>
     <!--jUnit5 into production-->
-    <!--TDD-->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>compile</scope>
-    </dependency>
 
     <!--jUnit5-->
     <dependency>
