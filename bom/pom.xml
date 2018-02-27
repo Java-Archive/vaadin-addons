@@ -5,7 +5,7 @@
   <parent>
     <artifactId>rapidpm-vaadin-addons</artifactId>
     <groupId>org.rapidpm</groupId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -20,13 +20,13 @@
 
     <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
 
-    <rapidpm-functional-reactive.version>0.1.0</rapidpm-functional-reactive.version>
-    <rapidpm-microservice.version>1.0.0</rapidpm-microservice.version>
+    <rapidpm-functional-reactive.version>0.5.1</rapidpm-functional-reactive.version>
+    <rapidpm-microservice.version>1.0.3</rapidpm-microservice.version>
 
-    <vaadin.version>8.1.7</vaadin.version>
+    <vaadin.version>8.3.1</vaadin.version>
     <vaadin-testbench.version>5.1.1</vaadin-testbench.version>
 
-    <selenium.version>3.4.0</selenium.version>
+    <selenium.version>3.8.1</selenium.version>
     <testcontainers.version>1.5.0</testcontainers.version>
   </properties>
 
@@ -56,14 +56,20 @@
         <type>pom</type>
       </dependency>
       <!--<dependency>-->
-        <!--<groupId>org.rapidpm</groupId>-->
-        <!--<artifactId>rapidpm-dependencies-core-logger</artifactId>-->
-        <!--<version>3.5.4</version>-->
+      <!--<groupId>org.rapidpm</groupId>-->
+      <!--<artifactId>rapidpm-dependencies-core-logger</artifactId>-->
+      <!--<version>3.5.4</version>-->
       <!--</dependency>-->
       <dependency>
         <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-functional-reactive</artifactId>
         <version>${rapidpm-functional-reactive.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.vaadin.leif</groupId>
+        <artifactId>headertags</artifactId>
+        <version>2.0</version>
       </dependency>
 
       <!--API´s-->
@@ -87,7 +93,6 @@
       </dependency>
 
 
-
       <!--Selenium -->
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
@@ -107,9 +112,35 @@
         <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
         <version>${project.version}</version>
       </dependency>
+
       <dependency>
-        <groupId>org.rapidpm.vaadin</groupId>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer-addon-test-helper</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer-rapidpm</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer-spring-boot</artifactId>
         <version>${project.version}</version>
       </dependency>
 

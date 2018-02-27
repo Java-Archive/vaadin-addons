@@ -5,6 +5,12 @@
 </center>
 
 # vaadin-addons
+
+
+
+
+
+
 This ist the first version of my TestBench Add On. **TestBench** is 
 from [https://vaadin.com/](https://vaadin.com/) and could 
 be found here [https://vaadin.com/testbench](https://vaadin.com/testbench).
@@ -33,10 +39,20 @@ Have a look at the tests or better, ask me ;-)
 email: [mailto:sven.ruppert@gmail.com](mailto:sven.ruppert@gmail.com)
 Twitter: [https://twitter.com/SvenRuppert](https://twitter.com/SvenRuppert) 
 
+## Configuration
+The Add on is configured by a bunch of files. You have to place them in a folder called `.testbenchextension` is folder can be located at different places:
+  1. The root of the classpath
+  1. The current work directory
+  1. The users home directory
+  1. In a directory specified by the property `rapidm.configlocation`
+  
+Properties defined in the higher locations override properties the lower one.
 
+Templates for the configuration are placed in the `.testbenchextentsions` directories in the modules.
+  
 ## Selenoid in Docker
 Selenoid is a nice alternative for Selenium-Hub written in GO.
-Give it a tryand check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
+Give it a try and check the githup repo here : [https://github.com/aerokube/selenoid](https://github.com/aerokube/selenoid)
 One easy way of using it, will be based on Docker.
 
 This is needed to manage the driver images 
@@ -50,16 +66,19 @@ docker pull selenoid/phantomjs:2.1.1
 
 This is needed to pull the docker images for the last 4 versions of the declared browsers.
 
-```bash
+````bash
 docker run --rm \
 -v /var/run/docker.sock:/var/run/docker.sock \
+-v `pwd`/selenoid/config:/root/.aerokube/selenoid/ \
 aerokube/cm:latest \
-selenoid \
-update \
+selenoid configure \
 --tmpfs 128 \
 --browsers chrome,firefox,opera,phantomjs \
---last-versions 4 > _data/selenoid/config/browsers.json
-```
+--last-versions 4
+````
+
+To reconfigure the browsers.json, delete the file in the folder
+selenoid/browsers.json and container.
 
 start the selenoid hub
 

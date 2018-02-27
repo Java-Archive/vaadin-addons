@@ -10,7 +10,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.store;
+import static org.rapidpm.vaadin.addons.junit5.extensions.ExtensionFunctions.store;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.seleniumhub.PageObjectWebDriverCleanerExtension.SESSION_ID;
 
 /**

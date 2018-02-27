@@ -5,20 +5,30 @@
   <parent>
     <artifactId>rapidpm-vaadin-addons-modules</artifactId>
     <groupId>org.rapidpm</groupId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>rapidpm-vaadin-addons-modules-testbench</artifactId>
-
-
   <dependencies>
 
     <dependency>
       <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-dependencies-core-properties</artifactId>
+      <version>${rapidpm-dependencies.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm</groupId>
       <artifactId>rapidpm-vaadin-addons-modules-junit5</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>org.rapidpm</groupId>
+      <artifactId>rapidpm-vaadin-addons-modules-framework</artifactId>
+    </dependency>
+	<dependency>
+    	<groupId>org.rapidpm</groupId>
+    	<artifactId>rapidpm-vaadin-addons-modules-container-initializer</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.rapidpm.microservice</groupId>
       <artifactId>rapidpm-microservice-modules-core</artifactId>
@@ -29,7 +39,17 @@
       <artifactId>rapidpm-microservice-modules-core-testutils</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+    	<groupId>org.rapidpm</groupId>
+    	<artifactId>rapidpm-vaadin-addons-modules-container-initializer-rapidpm</artifactId>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.vergien.bau</groupId>
+    	<artifactId>bean-auto-utils</artifactId>
+    	<version>0.0.7</version>
+    	<optional>true</optional>
+    </dependency>
     <!--Core Vaadin Stuff-->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -72,12 +92,6 @@
       <artifactId>selenium</artifactId>
     </dependency>
     <!--jUnit5 into production-->
-    <!--TDD-->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>compile</scope>
-    </dependency>
 
     <!--jUnit5-->
     <dependency>
@@ -92,49 +106,53 @@
       <!--<scope>provided</scope>-->
       <scope>compile</scope>
     </dependency>
-
-
   </dependencies>
 
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.github.webdriverextensions</groupId>
-        <artifactId>webdriverextensions-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>install-drivers</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
-          <!--Distributed FS-->
-          <!--<installationDirectory>/Users/andidev/drivers</installationDirectory>-->
-          <installationDirectory>_data/webdrivers</installationDirectory>
-          <drivers>
-            <driver>
-              <name>safari</name>
-            </driver>
-            <driver>
-              <name>chromedriver</name>
-            </driver>
-            <driver>
-              <name>operadriver</name>
-            </driver>
-            <driver>
-              <name>geckodriver</name>
-            </driver>
-            <driver>
-              <name>phantomjs</name>
-            </driver>
-          </drivers>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
+
+  <profiles>
+    <profile>
+      <id>-vaadin-addon-testbench-webdrivers</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.webdriverextensions</groupId>
+            <artifactId>webdriverextensions-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>install-drivers</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
+              <!--Distributed FS-->
+              <!--<installationDirectory>/Users/andidev/drivers</installationDirectory>-->
+              <installationDirectory>_data/webdrivers</installationDirectory>
+              <drivers>
+                <driver>
+                  <name>chromedriver</name>
+                </driver>
+                <driver>
+                  <name>operadriver</name>
+                </driver>
+                <driver>
+                  <name>geckodriver</name>
+                </driver>
+              </drivers>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+
+    </profile>
+  </profiles>
 
 </project>

@@ -21,7 +21,8 @@ public class PageObjectExtension implements ParameterResolver, HasLogger {
   @Override
   public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
       throws ParameterResolutionException {
-    return parameterContext.getParameter().isAnnotationPresent(PageObject.class);
+    final Class<?> type = parameterContext.getParameter().getType();
+    return VaadinPageObject.class.isAssignableFrom(type) ;
   }
 
   @Override

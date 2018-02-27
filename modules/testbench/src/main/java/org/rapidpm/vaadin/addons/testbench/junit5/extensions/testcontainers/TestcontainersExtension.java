@@ -8,11 +8,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.testcontainers.containers.BrowserWebDriverContainer;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.readDesiredCapabilities;
 import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.testcontainers.TestcontainersFunctions.*;
 
 
@@ -71,20 +68,20 @@ public class TestcontainersExtension
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
     logger().info("Testcontainer only can handle chrome and firefox ");
-    readDesiredCapabilities()
-        .get()
-        .ifPresentOrElse(
-            success -> capabilities = success
-                .stream()
-                .filter(dc ->
-                            dc.getBrowserName().equals("chrome") ||
-                            dc.getBrowserName().equals("firefox"))
-                .collect(toList()),
-            failed -> {
-              capabilities = new ArrayList<>();
-              capabilities.add(DesiredCapabilities.chrome());
-            }
-        );
+//    readDesiredCapabilities()
+//        .get()
+//        .ifPresentOrElse(
+//            success -> capabilities = success
+//                .stream()
+//                .filter(dc ->
+//                            dc.getBrowserName().equals("chrome") ||
+//                            dc.getBrowserName().equals("firefox"))
+//                .collect(toList()),
+//            failed -> {
+//              capabilities = new ArrayList<>();
+//              capabilities.add(DesiredCapabilities.chrome());
+//            }
+//        );
 
   }
 }

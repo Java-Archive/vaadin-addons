@@ -2,13 +2,13 @@ package org.rapidpm.vaadin.addons.testbench.junit5;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
-import org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions;
+import org.rapidpm.vaadin.addons.junit5.extensions.ExtensionFunctions;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.rapidpm.vaadin.addons.testbench.junit5.extensions.ExtensionFunctions.store;
+import static org.rapidpm.vaadin.addons.junit5.extensions.ExtensionFunctions.store;
 
 
 /**
