@@ -30,7 +30,7 @@ pipeline:
       - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
 #      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
 #      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
-#      - mvn clean
+      - mvn clean
       - mvn deploy -P repo-allow-vaadin
     when:
         matrix:
