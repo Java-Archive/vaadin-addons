@@ -13,5 +13,6 @@
 		<module>initializer-addon-test-helper</module>
 		<module>initializer-rapidpm</module>
 		<module>initializer-spring-boot</module>
+		<module>initializer-none</module>
 	</modules>
 </project>
