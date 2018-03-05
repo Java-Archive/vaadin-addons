@@ -9,7 +9,7 @@ import net.vergien.beanautoutils.annotation.Bean;
 public class GridConfig {
 
   public enum Type {
-    GENERIC, SELENOID
+    GENERIC, SELENOID, BROWSERSTACK
   }
 
   private final Type type;

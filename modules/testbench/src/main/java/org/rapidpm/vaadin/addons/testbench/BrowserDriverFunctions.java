@@ -125,7 +125,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   static CheckedSupplier<WebDriver> remoteWebDriverInstance(DesiredCapabilities desiredCapability,
                                                             final String ip) {
     return () -> {
-      final URL             url             = new URL("http://" + ip + ":4444/wd/hub");
+      final URL             url             = new URL(ip);
       final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
       return TestBench.createDriver(remoteWebDriver); // remove TB dependency (proxy)
     };
