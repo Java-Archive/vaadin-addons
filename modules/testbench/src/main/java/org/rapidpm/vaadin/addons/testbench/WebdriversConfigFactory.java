@@ -86,19 +86,25 @@ public class WebdriversConfigFactory implements HasLogger {
                                             .map(key -> key.substring(0, key.indexOf('.'))).collect(Collectors.toSet());
 
     for (String gridName : gridNames) {
-      GridConfig.Type type   = getGridType(configProperties, gridName);
-      String          target;
-      if(type==Type.BROWSERSTACK) {
-        target = getGridTargetBrowserStack(configProperties, gridName);
-      } else {        
-        target = getGridTarget(configProperties, gridName);
-      }
-      grids.add(new GridConfig(type, gridName, target,
-                               getDesiredCapapilites(configProperties, gridName, type)
+      if(isActive(configProperties, gridName)) {
+        GridConfig.Type type   = getGridType(configProperties, gridName);
+        String          target;
+        if(type==Type.BROWSERSTACK) {
+          target = getGridTargetBrowserStack(configProperties, gridName);
+        } else {        
+          target = getGridTarget(configProperties, gridName);
+        }
+        grids.add(new GridConfig(type, gridName, target,
+            getDesiredCapapilites(configProperties, gridName, type)
       ));
+      }
     }
 
     return grids;
+  }
+
+  private boolean isActive(Properties configProperties, String gridName) {
+    return Boolean.valueOf(getProperty(configProperties, gridName, "active", "true")); 
   }
 
   private Type getGridType(Properties configProperties, String gridName) {
