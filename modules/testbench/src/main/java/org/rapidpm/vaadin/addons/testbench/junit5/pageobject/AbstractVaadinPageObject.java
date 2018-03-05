@@ -1,9 +1,19 @@
 package org.rapidpm.vaadin.addons.testbench.junit5.pageobject;
 
-import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.*;
 import org.openqa.selenium.WebDriver;
 import org.rapidpm.vaadin.addons.testbench.WithID;
+import com.vaadin.testbench.TestBenchTestCase;
+import com.vaadin.testbench.elements.ButtonElement;
+import com.vaadin.testbench.elements.ComboBoxElement;
+import com.vaadin.testbench.elements.CssLayoutElement;
+import com.vaadin.testbench.elements.DateFieldElement;
+import com.vaadin.testbench.elements.FormLayoutElement;
+import com.vaadin.testbench.elements.GridElement;
+import com.vaadin.testbench.elements.HorizontalLayoutElement;
+import com.vaadin.testbench.elements.LabelElement;
+import com.vaadin.testbench.elements.PasswordFieldElement;
+import com.vaadin.testbench.elements.TextFieldElement;
+import com.vaadin.testbench.elements.VerticalLayoutElement;
 
 /**
  *
@@ -30,6 +40,10 @@ public abstract class AbstractVaadinPageObject
     getDriver().get(url);
   }
 
+  public String getTitle() {
+    return getDriver().getTitle();
+  }
+  
   public WithID<TextFieldElement> textField() {
     return id -> $(TextFieldElement.class).id(id);
   }
