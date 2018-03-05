@@ -47,6 +47,7 @@ public interface BrowserDriverFunctions extends HasLogger {
   String ENABLE_VNC   = "enableVNC";
   String VERSION      = "version";
   String ENABLE_VIDEO = "enableVideo";
+  String PROJECT      = "project";
 
 
   String SELENIUM_GRID_PROPERTIES_LOCALE_IP      = "locale-ip";

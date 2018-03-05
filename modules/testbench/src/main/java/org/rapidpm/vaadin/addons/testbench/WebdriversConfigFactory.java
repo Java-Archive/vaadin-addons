@@ -132,6 +132,12 @@ public class WebdriversConfigFactory implements HasLogger {
                                             getBoolean(configProperties, gridName, BrowserDriverFunctions.ENABLE_VNC)
             );
           }
+          else if (type == Type.BROWSERSTACK) {
+            final String project = getProperty(configProperties, gridName, "project");
+            if(StringUtils.isNotBlank(project)) {
+              desiredCapability.setCapability(BrowserDriverFunctions.PROJECT, project);
+            }
+          }
           desiredCapabilites.add(desiredCapability);
         }
       }
