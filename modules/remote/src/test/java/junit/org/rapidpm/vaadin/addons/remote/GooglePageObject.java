@@ -11,17 +11,7 @@ public class GooglePageObject extends AbstractVaadinPageObject {
   }
 
   @Override
-  public Supplier<String> ip() {
-    return () -> "www.google.com";
-  }
-
-  @Override
-  public Supplier<String> protocol() {
-    return () -> "https";
-  }
-
-  @Override
-  public Supplier<String> port() {
-    return () -> "443";
+  public Supplier<String> url() {
+    return () -> "https://www.google.com";
   }
 }
