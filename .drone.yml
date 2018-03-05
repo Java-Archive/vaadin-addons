@@ -15,8 +15,6 @@ pipeline:
       - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
       - echo "compattesting.grid.browserstack.username=$BROWSERSTACK_USERNAME" >> /root/.testbenchextensions/config.properties
       - echo "compattesting.grid.browserstack.key=$BROWSERSTACK_KEY" >> /root/.testbenchextensions/config.properties
-      - cat /root/.testbenchextensions/config.properties
-      - exit 77
       - mvn clean --batch-mode
       - mvn test -P repo-allow-vaadin --batch-mode
 
