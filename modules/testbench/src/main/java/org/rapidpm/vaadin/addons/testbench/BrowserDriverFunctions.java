@@ -48,13 +48,13 @@ public interface BrowserDriverFunctions extends HasLogger {
   String VERSION      = "version";
   String ENABLE_VIDEO = "enableVideo";
   String PROJECT      = "project";
-
+  String TAGS         = "tags";
 
   String SELENIUM_GRID_PROPERTIES_LOCALE_IP      = "locale-ip";
   String SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER = "locale";
   String SELENIUM_GRID_PROPERTIES_NO_GRID        = "nogrid";
 
-  String CONFIG_FOLDER = ".testbenchextensions/";
+  String CONFIG_FOLDER = ".testbenchextensions/";  
 
   static CheckedFunction<String, Properties> propertyReaderMemoized() {
     return (CheckedFunction<String, Properties>) memoize(propertyReader());

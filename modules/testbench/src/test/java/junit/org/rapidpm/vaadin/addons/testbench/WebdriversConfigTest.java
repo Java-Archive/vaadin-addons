@@ -83,4 +83,22 @@ public class WebdriversConfigTest {
         genericGridConfig.getTarget());
     assertEquals(Type.BROWSERSTACK, genericGridConfig.getType());
   }
+  
+  @Test
+  @DisplayName("build saucelabs config")
+  void test004() {
+    Result<Properties> apply = propertyReader().apply(CONFIG_FOLDER + "config-004");
+    Properties configProperties = apply.get();
+
+    WebdriversConfig config = factory.createFromProperies(configProperties);
+
+    assertEquals(1, config.getGridConfigs().size());
+
+    GridConfig genericGridConfig = config.getGridConfigs().stream()
+        .filter(grid -> grid.getName().equals("saucelabs")).findFirst().get();
+
+    assertEquals("https://dve81:abc@ondemand.saucelabs.com:443/wd/hub",
+        genericGridConfig.getTarget());
+    assertEquals(Type.SAUCELABS, genericGridConfig.getType());
+  }
 }

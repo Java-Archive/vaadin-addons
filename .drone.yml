@@ -5,7 +5,7 @@ workspace:
 pipeline:
   build:
     image: ${JDK_VERSION}
-    secrets: [tb_license, browserstack_username, browserstack_key ]
+    secrets: [tb_license, browserstack_username, browserstack_key, saucelabs_username, saucelabs_key]
     pull: true
     commands:
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
@@ -15,6 +15,8 @@ pipeline:
       - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
       - echo "compattesting.grid.browserstack.username=$BROWSERSTACK_USERNAME" >> /root/.testbenchextensions/config.properties
       - echo "compattesting.grid.browserstack.key=$BROWSERSTACK_KEY" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.saucelabs.username=$SAUCELABS_USERNAME" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.saucelabs.key=$SAUCELABS_KEY" >> /root/.testbenchextensions/config.properties
       - mvn clean --batch-mode
       - mvn test -P repo-allow-vaadin --batch-mode
 

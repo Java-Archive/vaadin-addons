@@ -89,11 +89,18 @@ public class WebdriversConfigFactory implements HasLogger {
       if(isActive(configProperties, gridName)) {
         GridConfig.Type type   = getGridType(configProperties, gridName);
         String          target;
-        if(type == Type.BROWSERSTACK) {
-          target = getGridTargetBrowserStack(configProperties, gridName);
-        } else {        
-          target = getGridTarget(configProperties, gridName);
+        
+        switch (type) {
+          case BROWSERSTACK:
+            target = getGridTargetBrowserStack(configProperties, gridName);        
+            break;
+          case SAUCELABS:
+            target = getGridTargetSauceLabs(configProperties, gridName);
+            break;
+          default:
+            target = getGridTarget(configProperties, gridName);
         }
+       
         grids.add(new GridConfig(type, gridName, target,
             getDesiredCapapilites(configProperties, gridName, type)
       ));
@@ -136,6 +143,12 @@ public class WebdriversConfigFactory implements HasLogger {
             final String project = getProperty(configProperties, gridName, "project");
             if(StringUtils.isNotBlank(project)) {
               desiredCapability.setCapability(BrowserDriverFunctions.PROJECT, project);
+            }
+          }
+          else if (type == Type.SAUCELABS) {
+            final String project = getProperty(configProperties, gridName, "project");
+            if(StringUtils.isNotBlank(project)) {
+              desiredCapability.setCapability(BrowserDriverFunctions.TAGS, project);
             }
           }
           desiredCapabilites.add(desiredCapability);
@@ -189,6 +202,14 @@ public class WebdriversConfigFactory implements HasLogger {
     final String key =
         Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".key"));
     return "https://" + userName + ":" + key + "@hub-cloud.browserstack.com/wd/hub";
+  }
+  
+  private String getGridTargetSauceLabs(Properties configProperties, String gridName) {
+    final String userName =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".username"));
+    final String key =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".key"));
+    return "https://" + userName + ":" + key + "@ondemand.saucelabs.com:443/wd/hub";
   }
   
   private String getGridNameKey(String gridName) {
