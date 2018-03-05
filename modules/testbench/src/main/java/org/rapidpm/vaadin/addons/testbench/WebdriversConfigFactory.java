@@ -150,6 +150,10 @@ public class WebdriversConfigFactory implements HasLogger {
             if(StringUtils.isNotBlank(project)) {
               desiredCapability.setCapability(BrowserDriverFunctions.TAGS, project);
             }
+            final String build = System.getProperty("SAUCELABS_BUILD");
+            if(StringUtils.isNotBlank(project)) {
+              desiredCapability.setCapability("build", build);
+            }
           }
           desiredCapabilites.add(desiredCapability);
         }
