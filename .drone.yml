@@ -13,8 +13,8 @@ pipeline:
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
       - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
-      - echo -n "compattesting.grid.browserstack.username=$BROWSERSTACK_USERNAME" >> /root/.testbenchextensions/config.properties
-      - echo -n "compattesting.grid.browserstack.key=$BROWSERSTACK_KEY" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.browserstack.username=$BROWSERSTACK_USERNAME" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.browserstack.key=$BROWSERSTACK_KEY" >> /root/.testbenchextensions/config.properties
       - mvn clean --batch-mode
       - mvn test -P repo-allow-vaadin --batch-mode
 
