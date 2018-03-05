@@ -8,7 +8,7 @@ pipeline:
     secrets: [tb_license, browserstack_username, browserstack_key, saucelabs_username, saucelabs_key]
     pull: true
     commands:
-      - export SAUCELABS_BUILD=vaadin-addons-$BUILD_NUMBER
+      - export SAUCELABS_BUILD=vaadin-addons-$DRONE_BUILD_NUMBER
       - echo $SAUCELABS_BUILD
       - exit 77
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
