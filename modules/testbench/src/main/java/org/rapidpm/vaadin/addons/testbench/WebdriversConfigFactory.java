@@ -89,7 +89,7 @@ public class WebdriversConfigFactory implements HasLogger {
       if(isActive(configProperties, gridName)) {
         GridConfig.Type type   = getGridType(configProperties, gridName);
         String          target;
-        if(type==Type.BROWSERSTACK) {
+        if(type == Type.BROWSERSTACK) {
           target = getGridTargetBrowserStack(configProperties, gridName);
         } else {        
           target = getGridTarget(configProperties, gridName);
