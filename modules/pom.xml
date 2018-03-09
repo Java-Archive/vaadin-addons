@@ -19,6 +19,7 @@
     <module>container</module>
     <module>testbench</module>
     <module>di</module>
+    <module>remote</module>
   </modules>
 
   <dependencyManagement>

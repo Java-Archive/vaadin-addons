@@ -1,5 +1,19 @@
 package org.rapidpm.vaadin.addons.testbench;
 
+import static java.util.Collections.unmodifiableList;
+import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER;
+import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.type2Capabilities;
+import static org.rapidpm.vaadin.addons.testbench.WebdriversConfig.CHROME_BINARY_PATH;
+import static org.rapidpm.vaadin.addons.testbench.WebdriversConfig.COMPATTESTING_GRID;
+import static org.rapidpm.vaadin.addons.testbench.WebdriversConfig.UNITTESTING_BROWSER;
+import static org.rapidpm.vaadin.addons.testbench.WebdriversConfig.UNITTESTING_HOST;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.openqa.selenium.Platform;
@@ -7,14 +21,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.dependencies.core.logger.HasLogger;
 import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.unmodifiableList;
-import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER;
-import static org.rapidpm.vaadin.addons.testbench.BrowserDriverFunctions.type2Capabilities;
-import static org.rapidpm.vaadin.addons.testbench.WebdriversConfig.*;
 
 public class WebdriversConfigFactory implements HasLogger {
 
@@ -24,7 +30,7 @@ public class WebdriversConfigFactory implements HasLogger {
         .apply(configProperties.getProperty(UNITTESTING_BROWSER, "chrome")).get();
 
     final String unittestingTarget =
-        configProperties.getProperty(UNITTESTING_TARGET, SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER);
+        getUnitTestingTarget(configProperties);
 
     final String chromeBinaryPath =
         configProperties.getProperty(CHROME_BINARY_PATH, null);
@@ -44,6 +50,16 @@ public class WebdriversConfigFactory implements HasLogger {
 
     logger().info("Loaded " + gridConfigs.size() + " grid configuration(s)");
     return new WebdriversConfig(unittestingTarget, unittestingBrowser, gridConfigs);
+  }
+
+  private String getUnitTestingTarget(Properties configProperties) {
+    final String host =
+        configProperties.getProperty(UNITTESTING_HOST, SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER);
+    if (SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER.equals(host)) {
+      return host;
+    } else {
+      return "http://" + host + ":4444/wd/hub";
+    }
   }
 
   private DesiredCapabilities addCapabilities(DesiredCapabilities capabilities, Map<String, ?> capabilitiesToAdd) {
@@ -70,14 +86,32 @@ public class WebdriversConfigFactory implements HasLogger {
                                             .map(key -> key.substring(0, key.indexOf('.'))).collect(Collectors.toSet());
 
     for (String gridName : gridNames) {
-      String          target = getGridTarget(configProperties, gridName);
-      GridConfig.Type type   = getGridType(configProperties, gridName);
-      grids.add(new GridConfig(type, gridName, target,
-                               getDesiredCapapilites(configProperties, gridName, type)
+      if(isActive(configProperties, gridName)) {
+        GridConfig.Type type   = getGridType(configProperties, gridName);
+        String          target;
+        
+        switch (type) {
+          case BROWSERSTACK:
+            target = getGridTargetBrowserStack(configProperties, gridName);        
+            break;
+          case SAUCELABS:
+            target = getGridTargetSauceLabs(configProperties, gridName);
+            break;
+          default:
+            target = getGridTarget(configProperties, gridName);
+        }
+       
+        grids.add(new GridConfig(type, gridName, target,
+            getDesiredCapapilites(configProperties, gridName, type)
       ));
+      }
     }
 
     return grids;
+  }
+
+  private boolean isActive(Properties configProperties, String gridName) {
+    return Boolean.valueOf(getProperty(configProperties, gridName, "active", "true")); 
   }
 
   private Type getGridType(Properties configProperties, String gridName) {
@@ -104,6 +138,22 @@ public class WebdriversConfigFactory implements HasLogger {
             desiredCapability.setCapability(BrowserDriverFunctions.ENABLE_VNC,
                                             getBoolean(configProperties, gridName, BrowserDriverFunctions.ENABLE_VNC)
             );
+          }
+          else if (type == Type.BROWSERSTACK) {
+            final String project = getProperty(configProperties, gridName, "project");
+            if(StringUtils.isNotBlank(project)) {
+              desiredCapability.setCapability(BrowserDriverFunctions.PROJECT, project);
+            }
+          }
+          else if (type == Type.SAUCELABS) {
+            final String project = getProperty(configProperties, gridName, "project");
+            if(StringUtils.isNotBlank(project)) {
+              desiredCapability.setCapability(BrowserDriverFunctions.TAGS, project);
+            }
+            final String build = System.getenv("SAUCELABS_BUILD");
+            if(StringUtils.isNotBlank(build)) {
+              desiredCapability.setCapability("build", build);
+            }
           }
           desiredCapabilites.add(desiredCapability);
         }
@@ -132,10 +182,40 @@ public class WebdriversConfigFactory implements HasLogger {
   }
 
   private String getGridTarget(Properties configProperties, String gridName) {
-    String target = configProperties.getProperty(getGridNameKey(gridName) + ".target");
-    return Validate.notBlank(target, "The target for the grid {} may not be blank", gridName);
+    final String host = getProperty(configProperties, gridName, "target");
+    Validate.notBlank(host, "The target for the grid {} may not be blank", gridName);
+
+    final String proto = getProperty(configProperties, gridName, "proto", "http");
+    final String port = getProperty(configProperties, gridName, "port", "4444");
+    final String path = getProperty(configProperties, gridName, "path", "wd/hub");
+
+    return proto + "://" + host + ":" + port + "/" + path;
   }
 
+  private String getProperty(Properties configProperties, String gridName, String property) {
+    return configProperties.getProperty(getGridNameKey(gridName) + "." + property);
+  }
+
+  private String getProperty(Properties configProperties, String gridName, String property, String defaultVaule) {
+    return configProperties.getProperty(getGridNameKey(gridName) + "." + property, defaultVaule);
+  }
+  
+  private String getGridTargetBrowserStack(Properties configProperties, String gridName) {
+    final String userName =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".username"));
+    final String key =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".key"));
+    return "https://" + userName + ":" + key + "@hub-cloud.browserstack.com/wd/hub";
+  }
+  
+  private String getGridTargetSauceLabs(Properties configProperties, String gridName) {
+    final String userName =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".username"));
+    final String key =
+        Validate.notBlank(configProperties.getProperty(getGridNameKey(gridName) + ".key"));
+    return "https://" + userName + ":" + key + "@ondemand.saucelabs.com:443/wd/hub";
+  }
+  
   private String getGridNameKey(String gridName) {
     return COMPATTESTING_GRID + "." + gridName;
   }

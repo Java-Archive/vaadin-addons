@@ -5,21 +5,19 @@ workspace:
 pipeline:
   build:
     image: ${JDK_VERSION}
-    secrets: [tb_license]
+    secrets: [tb_license, browserstack_username, browserstack_key, saucelabs_username, saucelabs_key]
     pull: true
     commands:
+      - export SAUCELABS_BUILD=vaadin-addons-$DRONE_BUILD_NUMBER
       - echo -n "$TB_LICENSE" > /root/vaadin.testbench.developer.license
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
       - cp /drone/src/rapidpm-vaadin-addons/modules/testbench/src/test/resources/.testbenchextensions/config-drone.properties /root/.testbenchextensions/config.properties
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
-#      TODO remove / fix this
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
-#      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
-#      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
+      - echo "compattesting.grid.browserstack.username=$BROWSERSTACK_USERNAME" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.browserstack.key=$BROWSERSTACK_KEY" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.saucelabs.username=$SAUCELABS_USERNAME" >> /root/.testbenchextensions/config.properties
+      - echo "compattesting.grid.saucelabs.key=$SAUCELABS_KEY" >> /root/.testbenchextensions/config.properties
       - mvn clean --batch-mode
       - mvn test -P repo-allow-vaadin --batch-mode
 
@@ -31,14 +29,6 @@ pipeline:
       - mkdir /root/.m2
       - mkdir /root/.testbenchextensions
       - cp /drone/src/rapidpm-vaadin-addons/_data/nexus/settings.xml /root/.m2/settings.xml
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /root/.testbenchextensions/browser_combinations.json
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /root/.testbenchextensions/selenium-grids.properties
-#      TODO remove / fix this
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/browser_combinations.json /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/browser_combinations.json
-#      - cp /drone/src/rapidpm-vaadin-addons/_data/configs/selenium-grids.properties /drone/src/rapidpm-vaadin-addons/modules/testbench/.testbenchextensions/selenium-grids.properties
-#      - cat ${GPG_KEY_PRIVATE} > /root/.gnupg/secring.gpg
-#      - cat ${GPG_KEY_PUBLIC} > /root/.gnupg/pubring.gpg
-#      - mvn clean
       - mvn deploy -P repo-allow-vaadin
     when:
         matrix:

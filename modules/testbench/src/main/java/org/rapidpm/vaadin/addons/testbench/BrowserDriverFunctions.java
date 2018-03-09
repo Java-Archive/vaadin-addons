@@ -47,13 +47,14 @@ public interface BrowserDriverFunctions extends HasLogger {
   String ENABLE_VNC   = "enableVNC";
   String VERSION      = "version";
   String ENABLE_VIDEO = "enableVideo";
-
+  String PROJECT      = "project";
+  String TAGS         = "tags";
 
   String SELENIUM_GRID_PROPERTIES_LOCALE_IP      = "locale-ip";
   String SELENIUM_GRID_PROPERTIES_LOCALE_BROWSER = "locale";
   String SELENIUM_GRID_PROPERTIES_NO_GRID        = "nogrid";
 
-  String CONFIG_FOLDER = ".testbenchextensions/";
+  String CONFIG_FOLDER = ".testbenchextensions/";  
 
   static CheckedFunction<String, Properties> propertyReaderMemoized() {
     return (CheckedFunction<String, Properties>) memoize(propertyReader());
@@ -125,9 +126,17 @@ public interface BrowserDriverFunctions extends HasLogger {
   static CheckedSupplier<WebDriver> remoteWebDriverInstance(DesiredCapabilities desiredCapability,
                                                             final String ip) {
     return () -> {
-      final URL             url             = new URL("http://" + ip + ":4444/wd/hub");
-      final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
-      return TestBench.createDriver(remoteWebDriver); // remove TB dependency (proxy)
+      try {
+        final URL             url             = new URL(ip);
+        final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapability);
+        return TestBench.createDriver(remoteWebDriver); // remove TB dependency (proxy)
+      }
+      catch (Exception e) {
+        Logger.getLogger(BrowserDriverFunctions.class).severe(
+            "Failure creating remote driver for browser " + desiredCapability.getBrowserName()
+            + "@" + ip, e);
+        throw e;
+      }
     };
   }
 

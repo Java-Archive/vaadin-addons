@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.vaadin.addons.testbench.GridConfig;
+import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfig;
 import org.rapidpm.vaadin.addons.testbench.WebdriversConfigFactory;
-import org.rapidpm.vaadin.addons.testbench.GridConfig.Type;
 
 public class WebdriversConfigTest {
   private WebdriversConfigFactory factory = new WebdriversConfigFactory();
@@ -38,14 +38,14 @@ public class WebdriversConfigTest {
     WebdriversConfig config = factory.createFromProperies(configProperties);
 
     assertEquals(DesiredCapabilities.firefox(), config.getUnittestingBrowser());
-    assertEquals("localhost", config.getUnittestingTarget());
+    assertEquals("http://localhost:4444/wd/hub", config.getUnittestingTarget());
 
     assertEquals(2, config.getGridConfigs().size());
 
     GridConfig genericGridConfig = config.getGridConfigs().stream()
         .filter(grid -> grid.getName().equals("generic")).findFirst().get();
 
-    assertEquals("localhost", genericGridConfig.getTarget());
+    assertEquals("http://localhost:4444/wd/hub", genericGridConfig.getTarget());
     assertEquals(Type.GENERIC, genericGridConfig.getType());
     
     List<DesiredCapabilities> desiredCapabilities = genericGridConfig.getDesiredCapabilities();
@@ -66,4 +66,39 @@ public class WebdriversConfigTest {
     }
   }
 
+  @Test
+  @DisplayName("build browserstack config")
+  void test003() {
+    Result<Properties> apply = propertyReader().apply(CONFIG_FOLDER + "config-003");
+    Properties configProperties = apply.get();
+
+    WebdriversConfig config = factory.createFromProperies(configProperties);
+
+    assertEquals(1, config.getGridConfigs().size());
+
+    GridConfig genericGridConfig = config.getGridConfigs().stream()
+        .filter(grid -> grid.getName().equals("browserstack")).findFirst().get();
+
+    assertEquals("https://danielnordhoffve1:abc@hub-cloud.browserstack.com/wd/hub",
+        genericGridConfig.getTarget());
+    assertEquals(Type.BROWSERSTACK, genericGridConfig.getType());
+  }
+  
+  @Test
+  @DisplayName("build saucelabs config")
+  void test004() {
+    Result<Properties> apply = propertyReader().apply(CONFIG_FOLDER + "config-004");
+    Properties configProperties = apply.get();
+
+    WebdriversConfig config = factory.createFromProperies(configProperties);
+
+    assertEquals(1, config.getGridConfigs().size());
+
+    GridConfig genericGridConfig = config.getGridConfigs().stream()
+        .filter(grid -> grid.getName().equals("saucelabs")).findFirst().get();
+
+    assertEquals("https://dve81:abc@ondemand.saucelabs.com:443/wd/hub",
+        genericGridConfig.getTarget());
+    assertEquals(Type.SAUCELABS, genericGridConfig.getType());
+  }
 }

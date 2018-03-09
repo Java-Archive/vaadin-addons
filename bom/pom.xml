@@ -130,6 +130,11 @@
       </dependency>
       <dependency>
         <groupId>org.rapidpm</groupId>
+        <artifactId>rapidpm-vaadin-addons-modules-container-initializer-none</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-vaadin-addons-modules-container-initializer-addon-test-helper</artifactId>
         <version>${project.version}</version>
       </dependency>
